@@ -13,5 +13,8 @@ Style/StringLiteralsInInterpolation:
   Enabled: true
   EnforcedStyle: double_quotes
 
+RSpec/DescribedClass:
+  EnforcedStyle: explicit
+
 Layout/LineLength:
   Max: 120
