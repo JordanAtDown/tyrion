@@ -7,8 +7,10 @@ class AnalyseErreur < StandardError; end
 
 # Analyseur
 class Analyseur
-  def analyse(nom)
-    regex_patterns = {
+  attr_accessor :regex_patterns
+
+  def initialize
+    @regex_patterns = {
       /(IMG|VID|PANO)_([0-9]{8})_([0-9]{6})/ => Extracteur.new.method(:analyse1),
       /(IMG|VID|PANO)_([0-9]{8})_([0-9]{4})/ => Extracteur.new.method(:analyse2),
       /(IMG|VID)_([0-9]{8})_([0-9]{4})-([0-9]{2})/ => Extracteur.new.method(:analyse2),
@@ -24,13 +26,23 @@ class Analyseur
       /(photo)_([0-9]{4})_([0-9]{2})_([0-9]{2})-([0-9]{2})_([0-9]{2})_([0-9]{2})/ => Extracteur.new.method(:analyse7),
       /(photo)_([0-9]{4})_([0-9]{2})_([0-9]{2})-([0-9]{2})_([0-9]{2})_([0-9]{2})-([0-9]{2})/ => Extracteur.new.method(:analyse7)
     }
+  end
 
+  def analyse(nom)
     regex_patterns.each_pair do |key, value|
       next unless key =~ nom
 
       return value.call(nom)
     end
     raise AnalyseErreur, "Aucune date n'est defini"
+  end
+
+  def est_analysable(nom)
+    est_analysable = false
+    regex_patterns.each_key do |key|
+      est_analysable = true if key =~ nom
+    end
+    est_analysable
   end
 end
 

@@ -69,4 +69,23 @@ RSpec.describe Analyseur do
       end
     end
   end
+
+  describe "doit définir si" do
+    where(:case_name, :nom, :attendu) do
+      [
+        ["le nom 'P1000153'", "P1000153", false],
+        ["le nom 'PHOTO-2021-09-19-10-08-06'", "PHOTO-2021-09-19-10-08-06", true],
+        ["le nom 'IMG_0012'", "IMG_0012", false],
+        ["le nom 'PHOTO-2021-09-19-10-08-06'", "PHOTO-2021-09-19-10-08-06", true],
+        ["le nom 'Mes Photos0001'", "Mes Photos0001", false],
+        ["le nom 'photo_2019_03_05-18_34_59'", "photo_2019_03_05-18_34_59", true],
+        ["le nom 'photo_2019_03_05-18_54_59-01'", "photo_2019_03_05-18_54_59-01", true]
+      ]
+    end
+    with_them do
+      it "contient une date" do
+        expect(Analyseur.new.est_analysable(nom)).to eq attendu
+      end
+    end
+  end
 end
