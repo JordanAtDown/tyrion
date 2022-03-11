@@ -21,6 +21,7 @@ GEM
       rexml
     kramdown-parser-gfm (1.1.0)
       kramdown (~> 2.0)
+    mocha (1.13.0)
     nokogiri (1.13.3-x86_64-linux)
       racc (~> 1.4)
     parallel (1.21.0)
@@ -102,6 +103,7 @@ PLATFORMS
 
 DEPENDENCIES
   debase (~> 0.2.4.1)
+  mocha (~> 1.13.0)
   rake (~> 13.0)
   rspec (~> 3.0)
   rspec-core (~> 3.11.0)

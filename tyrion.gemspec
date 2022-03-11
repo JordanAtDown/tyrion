@@ -24,10 +24,11 @@ Gem::Specification.new do |spec|
 
   # Uncomment to register a new dependency of your gem
   spec.add_development_dependency "debase", "~> 0.2.4.1"
+  spec.add_development_dependency "mocha", "~> 1.13.0"
   spec.add_development_dependency "rspec-core", "~> 3.11.0"
+  spec.add_development_dependency "rspec-parameterized", "~> 0.5.1"
   spec.add_development_dependency "rubocop-rspec", "~> 2.9.0"
   spec.add_development_dependency "ruby-debug-ide", "~> 0.7.3"
-  spec.add_development_dependency "rspec-parameterized", "~> 0.5.1"
   spec.add_development_dependency "solargraph", "~> 0.44.3"
   # For more information and examples about making a new gem, check out our
   # guide at: https://bundler.io/guides/creating_gem.html

@@ -1,9 +1,9 @@
 # frozen_string_literal: true
 
-require "analyseur"
+require "extracteur_par_date"
 
-RSpec.describe Analyseur do
-  describe "doit pouvoir analyser" do
+RSpec.describe ExtracteurParDate do
+  describe "doit pouvoir definir quand" do
     where(:case_name, :nom, :attendu) do
       [
         ["le nom 'IMG_20180416_220126'", "IMG_20180416_220126", DateTime.new(2018, 4, 16, 22, 1, 26)],
@@ -13,8 +13,10 @@ RSpec.describe Analyseur do
         ["le nom 'IMG_20210803175810'", "IMG_20210803175810", DateTime.new(2021, 8, 3, 17, 58, 10)],
         ["le nom 'IMG_20210612102118-02'", "IMG_20210612102118-02", DateTime.new(2021, 6, 12, 10, 21, 18)],
         ["le nom 'IMG_20190525_080431-modifié'", "IMG_20190525_080431-modifié", DateTime.new(2019, 5, 25, 8, 4, 31)],
-        ["le nom 'IMG_20190525_131228_BURST001_COVER'", "IMG_20190525_131228_BURST001_COVER", DateTime.new(2019, 5, 25, 13, 12, 28)],
-        ["le nom 'IMG_20190525_131228_BURST002'", "IMG_20190525_131228_BURST002", DateTime.new(2019, 5, 25, 13, 12, 28)],
+        ["le nom 'IMG_20190525_131228_BURST001_COVER'", "IMG_20190525_131228_BURST001_COVER",
+         DateTime.new(2019, 5, 25, 13, 12, 28)],
+        ["le nom 'IMG_20190525_131228_BURST002'", "IMG_20190525_131228_BURST002",
+         DateTime.new(2019, 5, 25, 13, 12, 28)],
         ["le nom '20151231_155723_011'", "20151231_155723_011", DateTime.new(2015, 12, 31, 15, 57, 23)],
         ["le nom '20151231_155747'", "20151231_155747", DateTime.new(2015, 12, 31, 15, 57, 47)],
         ["le nom '2016-08-08 19.28.33'", "2016-08-08 19.28.33", DateTime.new(2016, 8, 8, 19, 28, 33)],
@@ -24,19 +26,24 @@ RSpec.describe Analyseur do
         ["le nom '2013-12-23 11.29.46 (2)'", "2013-12-23 11.29.46 (2)", DateTime.new(2013, 12, 23, 11, 29, 46)],
         ["le nom '05-11-2010 21-26-00'", "05-11-2010 21-26-00", DateTime.new(2010, 11, 5, 21, 26, 0)],
         ["le nom 'VID_20191006_133847'", "VID_20191006_133847", DateTime.new(2019, 10, 6, 13, 38, 47)],
-        ["le nom 'Resized_20190915_132232_23821'", "Resized_20190915_132232_23821", DateTime.new(2019, 9, 15, 13, 22, 32)],
+        ["le nom 'Resized_20190915_132232_23821'", "Resized_20190915_132232_23821",
+         DateTime.new(2019, 9, 15, 13, 22, 32)],
         ["le nom '20151231_170821_001 (1)'", "20151231_170821_001 (1)", DateTime.new(2015, 12, 31, 17, 8, 21)],
         ["le nom 'IMG_20210808203548-02'", "IMG_20210808203548-02", DateTime.new(2021, 8, 8, 20, 35, 48)],
         ["le nom '20170713_162541(1)'", "20170713_162541(1)", DateTime.new(2017, 7, 13, 16, 25, 41)],
         ["le nom '20151231_162026 (1)'", "20151231_162026 (1)", DateTime.new(2015, 12, 31, 16, 20, 26)],
         ["le nom 'IMG_20180717_154633_1'", "IMG_20180717_154633_1", DateTime.new(2018, 7, 17, 15, 46, 33)],
-        ["le nom 'IMG_20190527_144358~2-modifié'", "2IMG_20190527_144358~2-modifié", DateTime.new(2019, 5, 27, 14, 43, 58)],
+        ["le nom 'IMG_20190527_144358~2-modifié'", "2IMG_20190527_144358~2-modifié",
+         DateTime.new(2019, 5, 27, 14, 43, 58)],
         ["le nom 'IMG_20190527_144358~2'", "IMG_20190527_144358~2", DateTime.new(2019, 5, 27, 14, 43, 58)],
-        ["le nom 'IMG_20190527_150854_1-modifié'", "IMG_20190527_150854_1-modifié", DateTime.new(2019, 5, 27, 15, 8, 54)],
+        ["le nom 'IMG_20190527_150854_1-modifié'", "IMG_20190527_150854_1-modifié",
+         DateTime.new(2019, 5, 27, 15, 8, 54)],
         ["le nom 'PANO_20191008_151214'", "PANO_20191008_151214", DateTime.new(2019, 10, 8, 15, 12, 14)],
         ["le nom 'IMG_20200712_115451 (2)'", "IMG_20200712_115451 (2)", DateTime.new(2020, 7, 12, 11, 54, 51)],
-        ["le nom 'Photo-2022-01-25-17-11-49_0031'", "Photo-2022-01-25-17-11-49_0031", DateTime.new(2022, 1, 25, 17, 11, 49)],
-        ["le nom 'PHOTO-2021-09-19-10-08-03 (3)'", "PHOTO-2021-09-19-10-08-03 (3)", DateTime.new(2021, 9, 19, 10, 8, 3)],
+        ["le nom 'Photo-2022-01-25-17-11-49_0031'", "Photo-2022-01-25-17-11-49_0031",
+         DateTime.new(2022, 1, 25, 17, 11, 49)],
+        ["le nom 'PHOTO-2021-09-19-10-08-03 (3)'", "PHOTO-2021-09-19-10-08-03 (3)",
+         DateTime.new(2021, 9, 19, 10, 8, 3)],
         ["le nom 'PHOTO-2021-09-19-10-08-06'", "PHOTO-2021-09-19-10-08-06", DateTime.new(2021, 9, 19, 10, 8, 6)],
         ["le nom 'PHOTO-2021-09-19-10-08-06'", "PHOTO-2021-09-19-10-08-06", DateTime.new(2021, 9, 19, 10, 8, 6)],
         ["le nom 'photo_2019_03_05-18_34_59'", "photo_2019_03_05-18_34_59", DateTime.new(2019, 3, 5, 18, 34, 59)],
@@ -44,8 +51,8 @@ RSpec.describe Analyseur do
       ]
     end
     with_them do
-      it "quand une date peut en être extraite" do
-        expect(Analyseur.new.analyse(nom)).to eq attendu
+      it "contient une date extirpable" do
+        expect(ExtracteurParDate.new.extraction_du(nom)).to eq attendu
       end
     end
   end
@@ -65,7 +72,7 @@ RSpec.describe Analyseur do
     end
     with_them do
       it "ne contient pas une date" do
-        expect { Analyseur.new.analyse(nom) }.to raise_error(AnalyseErreur, "Aucune date n'est defini")
+        expect { ExtracteurParDate.new.extraction_du(nom) }.to raise_error(ExtractionErreur, "Aucune date ne peux être extraite")
       end
     end
   end
@@ -84,7 +91,7 @@ RSpec.describe Analyseur do
     end
     with_them do
       it "contient une date" do
-        expect(Analyseur.new.est_analysable(nom)).to eq attendu
+        expect(ExtracteurParDate.new.extirpabilite(nom)).to eq attendu
       end
     end
   end
