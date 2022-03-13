@@ -1,9 +1,40 @@
 # frozen_string_literal: true
 
-require "etape/etape"
+require "etape/analyseEtape"
 require "analyseur"
 
-RSpec.describe Analyse do
+RSpec.describe AnalyseEtape do
+  describe "doit pouvoir parcourir" do
+    where(:case_name, :fichiers, :attendu) do
+      [
+        ["le dossier '/annee/mois'", { "/annee/mois" => ["01.txt", "IMG_20210803175810.txt", "03.txt"] }, { "/tmp/test01/annee/mois/*" => 33 }]
+      ]
+    end
+    with_them do
+      it "pour en definir le taux d'analyse" do
+        dossier_tmp = FileUtils.makedirs "/tmp/test01"
+
+        fichiers.each_pair do |key, value|
+          chemin_dossier = "#{dossier_tmp[0]}#{key}"
+          dossier_cree = FileUtils.makedirs(chemin_dossier)
+
+          value.each do |fichier|
+            chemin_fichier = "#{dossier_cree[0]}/#{fichier}"
+            File.new(chemin_fichier, "a")
+          end
+        end
+
+        analyse_etape = AnalyseEtape.new(Analyseur.new)
+
+        analyse_etape.parcours("#{dossier_tmp[0]}/*")
+
+        expect(analyse_etape.dossiers_analyses).to eq attendu
+
+        FileUtils.rmtree(dossier_tmp)
+      end
+    end
+  end
+
   describe "doit calculer le taux" do
     where(:case_name, :dossier_analyse, :dossier, :attendu) do
       [
@@ -15,7 +46,7 @@ RSpec.describe Analyse do
     end
     with_them do
       it "qui est analysable" do
-        expect(Analyse.new(dossier_analyse, Analyseur.new).calcul_taux_analyse_pour(dossier)).to eq attendu
+        expect(AnalyseEtape.new(Analyseur.new, dossier_analyse).calcul_taux_analyse_pour(dossier)).to eq attendu
       end
     end
   end
@@ -29,7 +60,7 @@ RSpec.describe Analyse do
     end
     with_them do
       it "afin de definir tout les fichiers d'un dossier" do
-        expect(Analyse.new(dossier_analyse, Analyseur.new).analyse_fichier(dossier, fichier)).to eq attendu
+        expect(AnalyseEtape.new(Analyseur.new, dossier_analyse).analyse_par(dossier, fichier)).to eq attendu
       end
     end
   end
