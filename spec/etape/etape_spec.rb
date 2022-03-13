@@ -1,6 +1,6 @@
 # frozen_string_literal: true
 
-require "etape/analyse"
+require "etape/etape"
 require "analyseur"
 
 RSpec.describe Analyse do
@@ -16,6 +16,20 @@ RSpec.describe Analyse do
     with_them do
       it "qui est analysable" do
         expect(Analyse.new(dossier_analyse, Analyseur.new).calcul_taux_analyse_pour(dossier)).to eq attendu
+      end
+    end
+  end
+
+  describe "doit pouvoir ajouter" do
+    where(:case_name, :dossier_analyse, :dossier, :fichier, :attendu) do
+      [
+        ["un fichier analyse au dossier '/tmp/vault/2022/02'", { "/tmp/vault/2022/02" => [true] }, "/tmp/vault/2022/02", "IMG_20190525_131228_BURST002", { "/tmp/vault/2022/02" => [true, true] }],
+        ["un nouveau dossier '/tmp/vault/2022/02'", {}, "/tmp/vault/2022/02", "Mes Photos0001", { "/tmp/vault/2022/02" => [false] }],
+      ]
+    end
+    with_them do
+      it "afin de definir tout les fichiers d'un dossier" do
+        expect(Analyse.new(dossier_analyse, Analyseur.new).analyse_fichier(dossier, fichier)).to eq attendu
       end
     end
   end
