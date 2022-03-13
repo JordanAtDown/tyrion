@@ -1,13 +1,14 @@
 # frozen_string_literal: true
 
-require "etape/renommageEtape"
+require "etape/dossier_analysable_etape"
+require "etape/fichier"
 require "analyseur"
 
-RSpec.describe RenommageEtape do
+RSpec.describe TraitementEtape do
   describe "doit pouvoir parcourir" do
     where(:case_name, :fichiers, :attendu) do
       [
-        ["le dossier '/2012/01'", { "/2012/01" => ["IMG_20210803175810.jpg"] }, { "/tmp/test01/2021/08/IMG_20210803175810.jpg" => Fichier.new("photo_2021_08_03-17_58_10") }]
+        ["le dossier '/2012/01'", { "/2012/01" => ["IMG_20210803175810.jpg"] }, { "/tmp/test01/2021/08/IMG_20210803175810.jpg" => Fichier.new("photo_2021_08_03-17_58_10", DateTime.new(2021, 9, 19, 10, 8, 6)) }]
       ]
     end
     with_them do
@@ -24,7 +25,7 @@ RSpec.describe RenommageEtape do
         end
       end
 
-      renommage_etape = RenommageEtape.new(Analyseur.new)
+      renommage_etape = TraitementDossierAnalysableEtape.new(Analyseur.new)
       renommage_etape.parcours("#{dossier_tmp[0]}/*")
       expect(renommage_etape.fichiers).to eq attendu
 
