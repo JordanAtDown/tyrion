@@ -5,8 +5,7 @@ require "analyseur"
 # Definition des dossiers analysable
 class AnalyseEtape
   attr_accessor :dossiers_analyses
-  attr_reader :nom_fichiers_analyses_par_dossier
-  attr_reader :analyseur
+  attr_reader :nom_fichiers_analyses_par_dossier, :analyseur
 
   def initialize(analyseur, nom_fichiers_analyses_par_dossier = {}, dossiers_analyses = {})
     @analyseur = analyseur
@@ -23,7 +22,9 @@ class AnalyseEtape
         next
       end
     end
-    @dossiers_analyses.merge!({ dossier => calcul_taux_analyse_pour(dossier) }) if @nom_fichiers_analyses_par_dossier.key?(dossier)
+    if @nom_fichiers_analyses_par_dossier.key?(dossier)
+      @dossiers_analyses.merge!({ dossier => calcul_taux_analyse_pour(dossier) })
+    end
   end
 
   def calcul_taux_analyse_pour(nom_dossier)

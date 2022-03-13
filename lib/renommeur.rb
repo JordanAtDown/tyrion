@@ -14,7 +14,7 @@ class Renommeur
     @noms_attribues.each do |nom_attribue|
       if nom_numerote == nom_attribue
         i += 1
-        nom_numerote = "%s-%02d" % [nom, i]
+        nom_numerote = format("%s-%02d", nom, i)
       end
     end
     nom_numerote
