@@ -1,7 +1,5 @@
 # frozen_string_literal: true
 
-require "analyseur"
-
 # Definition des dossiers analysable
 class AnalyseEtape
   attr_accessor :dossiers_analyses

@@ -4,7 +4,7 @@
 class Renommeur
   attr_accessor :noms_attribues
 
-  def initialize(noms_attribues)
+  def initialize(noms_attribues = [])
     @noms_attribues = noms_attribues
   end
 
@@ -17,6 +17,7 @@ class Renommeur
         nom_numerote = format("%s-%02d", nom, i)
       end
     end
+    @noms_attribues.push(nom_numerote)
     nom_numerote
   end
 end
