@@ -1,9 +1,9 @@
 # frozen_string_literal: true
 
-require "analyseur"
+require "extracteur_par_date"
 
-RSpec.describe Analyseur do
-  describe "doit pouvoir analyser" do
+RSpec.describe ExtracteurParDate do
+  describe "doit pouvoir definir quand" do
     where(:case_name, :nom, :attendu) do
       [
         ["le nom 'IMG_20180416_220126'", "IMG_20180416_220126", DateTime.new(2018, 4, 16, 22, 1, 26)],
@@ -51,8 +51,8 @@ RSpec.describe Analyseur do
       ]
     end
     with_them do
-      it "quand une date peut en être extraite" do
-        expect(Analyseur.new.analyse(nom)).to eq attendu
+      it "contient une date extirpable" do
+        expect(ExtracteurParDate.new.extraction_du(nom)).to eq attendu
       end
     end
   end
@@ -72,7 +72,7 @@ RSpec.describe Analyseur do
     end
     with_them do
       it "ne contient pas une date" do
-        expect { Analyseur.new.analyse(nom) }.to raise_error(AnalyseErreur, "Aucune date n'est defini")
+        expect { ExtracteurParDate.new.extraction_du(nom) }.to raise_error(ExtractionErreur, "Aucune date ne peux être extraite")
       end
     end
   end
@@ -91,7 +91,7 @@ RSpec.describe Analyseur do
     end
     with_them do
       it "contient une date" do
-        expect(Analyseur.new.est_analysable(nom)).to eq attendu
+        expect(ExtracteurParDate.new.extirpabilite(nom)).to eq attendu
       end
     end
   end

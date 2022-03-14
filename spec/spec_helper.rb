@@ -2,8 +2,12 @@
 
 require "tyrion"
 require "rspec-parameterized"
+require "helpers/file_helpers"
 
 RSpec.configure do |config|
+  # Include helpers
+  config.include FileHelpers
+
   # Enable mocha library for mocking and stubbing
   config.mock_with :mocha
 
