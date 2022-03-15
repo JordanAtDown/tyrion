@@ -1,7 +1,11 @@
 # frozen_string_literal: true
 
+require "observer"
+
 # Definit l'étape d'analyse
 class AnalyseEtape
+  include Observable
+
   attr_accessor :dossiers_analyses
   attr_reader :noms_extirpable_par_dossier, :extracteur
 
@@ -21,7 +25,10 @@ class AnalyseEtape
       end
     end
     if @noms_extirpable_par_dossier.key?(dossier)
-      @dossiers_analyses.merge!({ dossier => calcul_taux_d_extirpabilite_par(dossier) })
+      taux = calcul_taux_d_extirpabilite_par(dossier)
+      @dossiers_analyses.merge!({ dossier => taux })
+      changed
+      notify_observers(Time.now, DossierAnalyse.new(dossier, taux))
     end
   end
 
@@ -43,5 +50,15 @@ class AnalyseEtape
     else
       @noms_extirpable_par_dossier.merge!({ path_dossier => [].push(extracteur.extirpabilite(nom_fichier)) })
     end
+  end
+end
+
+# DossierAnalyse
+class DossierAnalyse
+  attr_reader :dossier, :taux
+
+  def initialize(dossier, taux)
+    @dossier = dossier
+    @taux = taux
   end
 end
