@@ -12,6 +12,10 @@ class Fichier
   end
 
   def get_nouveau_nom
-    "#{@path}/#{@nom_attribue}#{extension}"
+    "#{@path}/#{@nom_attribue}#{@extension.downcase}"
+  end
+
+  def get_path_nouveau_chemin
+    "#{@path}/#{@extension.slice!(0).upcase}/#{@nom_attribue}#{@extension.downcase}"
   end
 end
