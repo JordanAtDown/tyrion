@@ -25,8 +25,8 @@ RSpec.describe Dedoublonneur do
     where(:case_name, :numeros_attribues, :attendu) do
       [
         ["le numéro '001'", [], "001"],
-        ["le numéro '003'", ["001", "002"], "003"],
-        ["le numéro '010'", ["001", "002", "003", "004", "005", "006", "007", "008", "009"], "010"],
+        ["le numéro '003'", %w[001 002], "003"],
+        ["le numéro '010'", %w[001 002 003 004 005 006 007 008 009], "010"]
       ]
     end
     with_them do

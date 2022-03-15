@@ -3,7 +3,7 @@
 module FileHelpers
   TMP = "/tmp/"
 
-  def self.build_fichier(fichiers, dossier)
+  def self.build_fichiers(fichiers, dossier)
     fichiers.each_pair do |key, value|
       chemin_dossier = "#{dossier}#{key}"
       dossier_cree = FileUtils.makedirs(chemin_dossier)

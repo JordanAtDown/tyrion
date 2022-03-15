@@ -1,5 +1,7 @@
 # frozen_string_literal: true
 
+require "dossier_par_extension"
+
 # Fichier
 class Fichier
   attr_reader :nom_attribue, :date, :path, :extension
@@ -11,11 +13,11 @@ class Fichier
     @extension = extension
   end
 
-  def get_nouveau_nom
+  def path_nouveau_nom
     "#{@path}/#{@nom_attribue}#{@extension.downcase}"
   end
 
-  def get_path_nouveau_chemin
-    "#{@path}/#{@extension.slice!(0).upcase}/#{@nom_attribue}#{@extension.downcase}"
+  def path_destination
+    "#{@path}/#{DossierParExtension.defini_dossier_par(@extension)}/#{@nom_attribue}#{@extension.downcase}"
   end
 end
