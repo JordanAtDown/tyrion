@@ -12,6 +12,6 @@ class Fichier
   end
 
   def get_nouveau_nom
-    "#{@path}#{@nom_attribue}.#{extension}"
+    "#{@path}/#{@nom_attribue}#{extension}"
   end
 end

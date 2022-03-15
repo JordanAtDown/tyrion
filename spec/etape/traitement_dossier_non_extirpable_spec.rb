@@ -12,7 +12,7 @@ RSpec.describe TraitementDossierNonExtirpableEtape do
 
     where(:case_name, :fichiers, :attendu) do
       [
-        ["le dossier '/2012/01'", { "/2012/01" => ["P1000153.jpg"] }, { "/tmp/test02/2012/01/P1000153.jpg" => Fichier.new("001", DateTime.new(2021, 9, 19, 10, 8, 6), "/tmp/test02/2012/01/P1000153.jpg", ".jpg") }]
+        ["le dossier '/2012/01'", { "/2012/01" => ["P1000153.jpg"] }, { "/tmp/test02/2012/01/P1000153.jpg" => Fichier.new("001", DateTime.new(2021, 9, 19, 10, 8, 6), "/tmp/test02/2012/01", ".jpg") }]
       ]
     end
     with_them do

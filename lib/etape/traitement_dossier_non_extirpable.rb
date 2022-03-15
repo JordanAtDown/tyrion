@@ -17,7 +17,7 @@ class TraitementDossierNonExtirpableEtape
     Dir.glob(dossier) do |fichier|
       if File.file?(fichier)
         numero_attribue = dedoublonneur.attribution_par_numero
-        fichiers.merge!({ fichier => Fichier.new(numero_attribue, Directory.get_date(File.dirname(fichier)), fichier.path, File.extname(fichier)) })
+        fichiers.merge!({ fichier => Fichier.new(numero_attribue, Directory.get_date(File.dirname(fichier)), File.dirname(fichier), File.extname(fichier)) })
       else
         parcours("#{fichier}/*")
         next

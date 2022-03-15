@@ -15,7 +15,7 @@ RSpec.describe TraitementDossierExtirpableEtape do
 
     where(:case_name, :fichiers, :attendu) do
       [
-        ["le dossier '/2012/01'", { "/2012/01" => ["IMG_20210803175810.jpg"] }, { "/tmp/test01/2021/08/IMG_20210803175810.jpg" => Fichier.new("photo_2021_08_03-17_58_10", DateTime.new(2021, 8, 3, 17, 58, 10), "/tmp/test01/2021/08/IMG_20210803175810.jpg", ".jpg") }],
+        ["le dossier '/2012/01'", { "/2012/01" => ["IMG_20210803175810.jpg"] }, { "/tmp/test01/2021/08/IMG_20210803175810.jpg" => Fichier.new("photo_2021_08_03-17_58_10", DateTime.new(2021, 8, 3, 17, 58, 10), "/tmp/test01/2021/08", ".jpg") }],
       ]
     end
     with_them do
@@ -25,7 +25,7 @@ RSpec.describe TraitementDossierExtirpableEtape do
         traitement_etape = TraitementDossierExtirpableEtape.new(ExtracteurParDate.new)
         traitement_etape.parcours("#{@dossier_tmp[0]}/*")
         
-        expect(traitement_etape.fichiers).to eql? attendu
+        expect(traitement_etape.fichiers).to eql attendu
       end
 
       after(:example) do

@@ -14,7 +14,7 @@ RSpec.describe ApplicationEtape do
       [
         ["le dossier '/2012/08'", { "/2012/08" => ["IMG_20210803175810.jpg"] }, 
         { "/tmp/test01/2012/08/IMG_20210803175810.jpg" => 
-          Fichier.new("photo_2021_08_03-17_58_10", DateTime.new(2021, 8, 3, 17, 58, 10), "/tmp/test01/2012/08/", "jpg") }, []
+          Fichier.new("photo_2021_08_03-17_58_10", DateTime.new(2021, 8, 3, 17, 58, 10), "/tmp/test01/2012/08/", ".jpg") }, []
         ],
       ]
     end
