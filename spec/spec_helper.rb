@@ -1,7 +1,8 @@
 # frozen_string_literal: true
 
-require "tyrion"
 require "rspec-parameterized"
+
+require "tyrion"
 require "helpers/file_helpers"
 
 RSpec.configure do |config|

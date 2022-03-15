@@ -1,18 +1,18 @@
 # frozen_string_literal: true
 
-require "etape/analyse"
+require "etape/analyse_etape"
 require "extracteur_par_date"
 
 RSpec.describe AnalyseEtape do
   describe "doit pouvoir parcourir" do
-    
-    before(:example) do
+    before do
       @dossier_tmp = FileUtils.makedirs "#{FileHelpers::TMP}test01"
     end
 
     where(:case_name, :fichiers, :attendu) do
       [
-        ["le dossier '/annee/mois'", { "/annee/mois" => ["01.jpg", "IMG_20210803175810.jpg", "03.jpg"] }, { "/tmp/test01/annee/mois/*" => 33 }],
+        ["le dossier '/annee/mois'", { "/annee/mois" => ["01.jpg", "IMG_20210803175810.jpg", "03.jpg"] },
+         { "/tmp/test01/annee/mois/*" => 33 }],
         ["les dossiers de l'année 2012", { "/2012/01" => ["01.png", "IMG_20210803175810.png", "03.png"],
                                            "/2012/02" => ["20151231_155747.png", "IMG_20210803175810.jpeg",
                                                           "05-11-2010 21-26-00.png"] }, { "/tmp/test01/2012/01/*" => 33,
@@ -21,7 +21,7 @@ RSpec.describe AnalyseEtape do
     end
     with_them do
       it "pour en definir le taux d'extirpabilite" do
-        FileHelpers.build_fichier(fichiers, @dossier_tmp[0])
+        FileHelpers.build_fichiers(fichiers, @dossier_tmp[0])
 
         analyse_etape = AnalyseEtape.new(ExtracteurParDate.new)
         analyse_etape.parcours("#{@dossier_tmp[0]}/*")
@@ -29,7 +29,7 @@ RSpec.describe AnalyseEtape do
         expect(analyse_etape.dossiers_analyses).to eq attendu
       end
 
-      after(:example) do
+      after do
         FileUtils.rm_rf(@dossier_tmp[0])
       end
     end
@@ -50,7 +50,8 @@ RSpec.describe AnalyseEtape do
     end
     with_them do
       it "le taux d'extirpabilite" do
-        expect(AnalyseEtape.new(ExtracteurParDate.new, noms_extirpable_par_dossier).calcul_taux_d_extirpabilite_par(dossier)).to eq attendu
+        expect(AnalyseEtape.new(ExtracteurParDate.new,
+                                noms_extirpable_par_dossier).calcul_taux_d_extirpabilite_par(dossier)).to eq attendu
       end
     end
   end
@@ -66,7 +67,8 @@ RSpec.describe AnalyseEtape do
     end
     with_them do
       it "afin de verifier tout tous les fichiers" do
-        expect(AnalyseEtape.new(ExtracteurParDate.new, noms_extirpable_par_dossier).extirpabilite_par(dossier, fichier)).to eq attendu
+        expect(AnalyseEtape.new(ExtracteurParDate.new, noms_extirpable_par_dossier).extirpabilite_par(dossier,
+                                                                                                      fichier)).to eq attendu
       end
     end
   end
