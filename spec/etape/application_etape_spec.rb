@@ -1,6 +1,7 @@
 # frozen_string_literal: true
 
 require "etape/application_etape"
+require "exif/mini_exiftool_manipulateur"
 require "etape/fichier"
 
 RSpec.describe ApplicationEtape do
@@ -21,8 +22,10 @@ RSpec.describe ApplicationEtape do
     with_them do
       it "pour en definir les fichiers à traités" do
         FileHelpers.build_fichiers(fichiers_crees, @dossier_tmp[0])
-
-        ApplicationEtape.new.parcours(fichiers)
+        exif_manipulateur_mock = MiniExifToolManipulateur::ExifManipulateur.new
+        exif_manipulateur_mock.stubs(:set_datetimeoriginal).with("/tmp/test01/2012/08/IMG_20210803175810.jpg", DateTime.new(2021, 8, 3, 17, 58, 10))
+        
+        ApplicationEtape.new(exif_manipulateur_mock).parcours(fichiers)
 
         expect(FileHelpers.nombre_fichiers(@dossier_tmp[0])).to eql attendu.length
         attendu.each do |fichier|
