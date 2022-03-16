@@ -2,6 +2,8 @@
 
 require "observer"
 
+require "notification/analyse_notification"
+
 # Definit l'étape d'analyse
 class AnalyseEtape
   include Observable
@@ -29,7 +31,7 @@ class AnalyseEtape
       taux = calcul_taux_d_extirpabilite_par(dossier)
       @dossiers_analyses.merge!({ dossier => taux })
       changed
-      notify_observers(Time.now, DossierAnalyse.new(dossier, taux))
+      notify_observers(Time.now, AnalyseNotification.new(dossier, taux))
     end
   end
 
@@ -51,15 +53,5 @@ class AnalyseEtape
     else
       @noms_extirpable_par_dossier.merge!({ path_dossier => [].push(extracteur.extirpabilite(nom_fichier)) })
     end
-  end
-end
-
-# DossierAnalyse
-class DossierAnalyse
-  attr_reader :dossier, :taux
-
-  def initialize(dossier, taux)
-    @dossier = dossier
-    @taux = taux
   end
 end

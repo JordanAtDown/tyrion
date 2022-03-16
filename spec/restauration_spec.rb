@@ -8,20 +8,28 @@ require "restauration"
 require "extracteur_par_date"
 
 RSpec.describe Restauration do
-  describe "doit extraire" do
+  describe "doit restaurer" do
     before do
       @dossier_tmp = FileUtils.makedirs "#{FileHelpers::TMP}test01"
     end
 
-    where(:case_name, :fichiers) do
+    where(:case_name, :fichiers, :attendu) do
       [
-        ["la date '01/01/2020'", { "/2012/01" => ["01.png", "IMG_20210803175810.png", "03.png"],
-                                   "/2012/02" => ["20151231_155747.png", "IMG_20210803175810.jpeg",
-                                                  "05-11-2010 21-26-00.png"] }]
+        ["le dossier'",
+          { "/2012/01" => ["P000053.png", "P000054.png", "P000056.png"],
+            "/2012/02" => ["20120228_155747.png", "IMG_20120203175810.jpeg", "05-02-2012 21-26-00.png"] },
+          [ "#{FileHelpers::TMP}test01/2012/01/PNG/001.png",
+            "#{FileHelpers::TMP}test01/2012/01/PNG/002.png",
+            "#{FileHelpers::TMP}test01/2012/01/PNG/003.png",
+            "#{FileHelpers::TMP}test01/2012/02/PNG/photo_2012_02_28-15_57_47.png",
+            "#{FileHelpers::TMP}test01/2012/02/JPG/photo_2012_02_03-17_58_10.jpeg",
+            "#{FileHelpers::TMP}test01/2012/02/PNG/photo_2012_02_05-21_26_00.png"
+          ]
+        ]
       ]
     end
     with_them do
-      it "pour attribuer une numerotation" do
+      it "afin de reattribuer les metadatas, le nommage et l'emplacement des fichiers" do
         FileHelpers.build_fichiers(fichiers, @dossier_tmp[0])
 
         Restauration.new(
@@ -29,7 +37,12 @@ RSpec.describe Restauration do
           TraitementDossierExtirpableEtape.new(ExtracteurParDate.new),
           TraitementDossierNonExtirpableEtape.new,
           ApplicationEtape.new
-        ).process("#{@dossier_tmp[0]}/*", false)
+        ).process("#{@dossier_tmp[0]}/*", true)
+
+        expect(FileHelpers.nombre_fichiers(@dossier_tmp[0])).to eql attendu.length
+        attendu.each do |fichier|
+          expect(File.exist?(fichier)).to be_truthy
+        end
       end
 
       after do
