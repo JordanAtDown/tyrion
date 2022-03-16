@@ -7,6 +7,7 @@ require "etape/analyse_etape"
 require "etape/application_etape"
 require "etape/traitement_dossier_extirpable_etape"
 require "etape/traitement_dossier_non_extirpable_etape"
+require "exif/mini_exiftool_manipulateur"
 require "restauration"
 require "extracteur_par_date"
 
@@ -33,7 +34,7 @@ module Tyrion
         AnalyseEtape.new(ExtracteurParDate.new),
         TraitementDossierExtirpableEtape.new(ExtracteurParDate.new),
         TraitementDossierNonExtirpableEtape.new,
-        ApplicationEtape.new
+        ApplicationEtape.new(MiniExifToolManipulateur::ExifManipulateur.new)
       ).process(path, options[:apply])
     end
   end

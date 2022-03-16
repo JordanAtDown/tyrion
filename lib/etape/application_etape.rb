@@ -7,6 +7,12 @@ require "fileutils"
 class ApplicationEtape
   include Observable
   
+  attr_reader :exif_manipulateur
+
+  def initialize(exif_manipulateur = nil)
+    @exif_manipulateur = exif_manipulateur
+  end
+
   def parcours(fichiers)
     fichiers.each_pair do |key, value|
       if File.file?(key)

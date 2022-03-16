@@ -4,10 +4,14 @@ require "rspec-parameterized"
 
 require "tyrion"
 require "helpers/file_helpers"
+require "helpers/exif_helpers"
+require "helpers/image_helpers"
 
 RSpec.configure do |config|
-  # Include helpers
+  # Including helpers
   config.include FileHelpers
+  config.include ExifHelpers
+  config.include ImageHelpers
 
   # Enable mocha library for mocking and stubbing
   config.mock_with :mocha
