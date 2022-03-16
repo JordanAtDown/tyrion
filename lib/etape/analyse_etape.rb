@@ -15,8 +15,9 @@ class AnalyseEtape
     @dossiers_analyses = dossiers_analyses
   end
 
-  def parcours(dossier)
-    Dir.glob(dossier) do |fichier|
+  def parcours(path_dossier)
+    dossier = File.dirname(path_dossier)
+    Dir.glob(path_dossier) do |fichier|
       if File.file?(fichier)
         extirpabilite_par(dossier, fichier)
       else

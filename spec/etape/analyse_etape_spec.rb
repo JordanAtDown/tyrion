@@ -12,11 +12,11 @@ RSpec.describe AnalyseEtape do
     where(:case_name, :fichiers, :attendu) do
       [
         ["le dossier '/annee/mois'", { "/annee/mois" => ["01.jpg", "IMG_20210803175810.jpg", "03.jpg"] },
-         { "/tmp/test01/annee/mois/*" => 33 }],
+         { "/tmp/test01/annee/mois" => 33 }],
         ["les dossiers de l'année 2012", { "/2012/01" => ["01.png", "IMG_20210803175810.png", "03.png"],
                                            "/2012/02" => ["20151231_155747.png", "IMG_20210803175810.jpeg",
-                                                          "05-11-2010 21-26-00.png"] }, { "/tmp/test01/2012/01/*" => 33,
-                                                                                          "/tmp/test01/2012/02/*" => 100 }]
+                                                          "05-11-2010 21-26-00.png"] }, { "/tmp/test01/2012/01" => 33,
+                                                                                          "/tmp/test01/2012/02" => 100 }]
       ]
     end
     with_them do

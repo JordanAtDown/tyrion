@@ -24,9 +24,12 @@ RSpec.describe Restauration do
       it "pour attribuer une numerotation" do
         FileHelpers.build_fichiers(fichiers, @dossier_tmp[0])
 
-        reparation = Restauration.new(AnalyseEtape.new(ExtracteurParDate.new),
-                                      TraitementDossierExtirpableEtape.new(ExtracteurParDate.new), TraitementDossierNonExtirpableEtape.new, ApplicationEtape.new)
-        reparation.process("#{@dossier_tmp[0]}/*", false)
+        Restauration.new(
+          AnalyseEtape.new(ExtracteurParDate.new),
+          TraitementDossierExtirpableEtape.new(ExtracteurParDate.new),
+          TraitementDossierNonExtirpableEtape.new,
+          ApplicationEtape.new
+        ).process("#{@dossier_tmp[0]}/*", false)
       end
 
       after do

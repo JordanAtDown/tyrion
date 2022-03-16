@@ -26,7 +26,12 @@ class Restauration
   end
 
   def traitement_dossier_extirpable_en_cours(time, traiement_notification)
-    puts format("[ERREUR][Traitement] [%s] : Le fichier %s n'a pas pu être extrait",
+    puts format("[Traitement][Extirpable] [%s] : traitement sur le fichier '%s'",
+                time.strftime("%Y-%m-%d %H:%M:%S"), traiement_notification.nom_fichier)
+  end
+
+  def traitement_dossier_non_extirpable_en_cours(time, traiement_notification)
+    puts format("[Traitement][Non Extirpable] [%s] : traitement sur le fichier '%s'",
                 time.strftime("%Y-%m-%d %H:%M:%S"), traiement_notification.nom_fichier)
   end
 
