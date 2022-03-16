@@ -4,6 +4,6 @@ require "exif"
 
 module ExifHelpers
   def self.get_datetime(fichier)
-    Exif::Data.new(File.open(fichier)).date_time
+    Exif::Data.new(File.open(fichier)).date_time_original
   end
 end
