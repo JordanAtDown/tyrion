@@ -11,9 +11,11 @@ RSpec.describe ApplicationEtape do
 
     where(:case_name, :fichiers_crees, :fichiers, :attendu) do
       [
-        ["le dossier '/2012/08'", { "/2012/08" => ["IMG_20210803175810.jpg"] },
-         { "/tmp/test01/2012/08/IMG_20210803175810.jpg" =>
-           Fichier.new("photo_2021_08_03-17_58_10", DateTime.new(2021, 8, 3, 17, 58, 10), "/tmp/test01/2012/08/", ".jpg") }, []]
+        ["le dossier '/2012/08'",
+          { "/2012/08" => ["IMG_20210803175810.jpg"] },
+          { "/tmp/test01/2012/08/IMG_20210803175810.jpg" => Fichier.new("photo_2021_08_03-17_58_10", DateTime.new(2021, 8, 3, 17, 58, 10), "/tmp/test01/2012/08/", ".jpg") }, 
+         ["#{FileHelpers::TMP}test01/2012/08/JPG/photo_2021_08_03-17_58_10.jpg"]
+        ]
       ]
     end
     with_them do
@@ -22,7 +24,10 @@ RSpec.describe ApplicationEtape do
 
         ApplicationEtape.new.parcours(fichiers)
 
-        # expect(traitement_etape.fichiers).to eql? attendu
+        expect(FileHelpers.nombre_fichiers(@dossier_tmp[0])).to eql attendu.length
+        attendu.each do |fichier|
+          expect(File.exist?(fichier)).to be_truthy
+        end
       end
 
       after do
