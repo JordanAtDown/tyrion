@@ -18,9 +18,9 @@ class TraitementDossierNonExtirpableEtape
   end
 
   def parcours(dossiers)
-    puts dossiers
-    # notify_observers(Time.now, TraitementNotification.new(dossiers))
     dossiers.each do |dossier|
+      changed
+      notify_observers(Time.now, TraitementNotification.new(fichier))
       dedoublonneur = Dedoublonneur.new
       Dir.each_child(dossier) do |nom_fichier|
         fichier = "#{dossier}/#{nom_fichier}"
@@ -31,8 +31,10 @@ class TraitementDossierNonExtirpableEtape
             Fichier.new(numero_attribue,
               Directory.get_date(File.dirname(fichier)),
               File.dirname(fichier),
-              File.extname(fichier))
-          )
+              File.extname(fichier)))
+          notify_observers(Time.now, TraitementNotification.new(fichier))
+        else
+          notify_observers(Time.now, TraitementNotification.new(fichier))
         end
       end
     end

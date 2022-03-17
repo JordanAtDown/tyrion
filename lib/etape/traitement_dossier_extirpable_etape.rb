@@ -19,17 +19,20 @@ class TraitementDossierExtirpableEtape
   end
 
   def parcours(dossiers)
+    changed
+    notify_observers(Time.now, TraitementNotification.new(fichier))
     dossiers.each do |dossier|
       dedoublonneur = Dedoublonneur.new
       Dir.each_child(dossier) do |nom_fichier|
+        notify_observers(Time.now, TraitementNotification.new(nom_fichier))
         begin
           changed
           fichier = "#{dossier}/#{nom_fichier}"
-          notify_observers(Time.now, TraitementNotification.new(fichier))
           date_extraite = extracteur.extraction_du(File.basename(fichier, File.extname(fichier)))
           nom_attribue = dedoublonneur.dedoublonne_par_numerotation(date_extraite.strftime("photo_%Y_%m_%d-%H_%M_%S"))
           fichiers.store(fichier,
                         Fichier.new(nom_attribue, date_extraite, File.dirname(fichier), File.extname(fichier)))
+          notify_observers(Time.now, TraitementNotification.new(nom_fichier))
         rescue ExtractionErreur
           notify_observers(Time.now, TraitementNotification.new(fichier))
         end

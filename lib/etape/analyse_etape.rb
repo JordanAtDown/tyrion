@@ -20,10 +20,16 @@ class AnalyseEtape
   end
 
   def parcours(dossier)
+    changed
+    notify_observers(Time.now, AnalyseNotification.new(dossier, taux))
     Dir.each_child(dossier) do |nom_fichier|
       fichier = "#{dossier}/#{nom_fichier}"
       if File.file?(fichier)
-        extirpabilite_par(dossier, fichier) if File.extname(fichier) =~ EXTENSIONS_EXCLUS
+        if File.extname(fichier) =~ EXTENSIONS_EXCLUS
+          extirpabilite_par(dossier, fichier)
+        else
+          notify_observers(Time.now, AnalyseNotification.new(dossier, taux))
+        end
       else
         parcours(fichier)
         next
@@ -32,7 +38,6 @@ class AnalyseEtape
     if @noms_extirpable_par_dossier.key?(dossier)
       taux = calcul_taux_d_extirpabilite_par(dossier)
       @dossiers_analyses.merge!({ dossier => taux })
-      changed
       notify_observers(Time.now, AnalyseNotification.new(dossier, taux))
     end
   end

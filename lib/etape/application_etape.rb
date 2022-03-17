@@ -3,6 +3,8 @@
 require "observer"
 require "fileutils"
 
+require "notification/application_notification"
+
 # Définit l'étape d'application
 class ApplicationEtape
   include Observable
@@ -14,18 +16,21 @@ class ApplicationEtape
   end
 
   def parcours(fichiers)
+    changed
     fichiers.each_pair do |key, value|
+      notify_observers(Time.now, ApplicationNotification.new(fichier))
       if File.file?(key)
         begin
           exif_manipulateur.set_datetimeoriginal(key, value.date)
           File.rename(key, value.path_nouveau_nom)
           FileUtils.mkdir_p(File.dirname(value.path_destination))
           FileUtils.move(value.path_nouveau_nom, value.path_destination)
+          notify_observers(Time.now, ApplicationNotification.new(fichier))
         rescue SystemCallError => e
-          puts e.class
-          puts e.message
-          puts e.trace
+          notify_observers(Time.now, ApplicationNotification.new(fichier))
         end
+      else
+        notify_observers(Time.now, ApplicationNotification.new(fichier))
       end
     end
   end

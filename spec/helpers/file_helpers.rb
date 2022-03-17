@@ -15,6 +15,6 @@ module FileHelpers
   end
 
   def self.nombre_fichiers(dossier)
-    Dir.glob(File.join(dossier, '**', '*')).select { |file| File.file?(file) }.count
+    Dir.glob(File.join(dossier, "**", "*")).select { |file| File.file?(file) }.count
   end
 end

@@ -9,9 +9,10 @@ class Restauration
     @traitement_dossier_extirpable = traitement_dossier_extirpable
     @traitement_dossier_non_extirpable = traitement_dossier_non_extirpable
     @application = application
-    @analyse.add_observer(self, :analyse_en_cours)
-    @traitement_dossier_extirpable.add_observer(self, :traitement_dossier_extirpable_en_cours)
-    @traitement_dossier_non_extirpable.add_observer(self, :traitement_dossier_non_extirpable_en_cours)
+    @analyse.add_observer(self, :analyse_notifie)
+    @traitement_dossier_extirpable.add_observer(self, :traitement_notifie)
+    @traitement_dossier_non_extirpable.add_observer(self, :traitement_notifie)
+    @application.add_observer(self, :application_notifie)
   end
 
   def process(dossier, applique)
@@ -25,18 +26,18 @@ class Restauration
     end
   end
 
-  def traitement_dossier_extirpable_en_cours(time, traitement_notification)
+  def application_notifie(time, traitement_notification)
     puts format("[Traitement][Extirpable] [%s] : traitement sur le fichier '%s'",
                 time.strftime("%Y-%m-%d %H:%M:%S"), traitement_notification.nom_fichier)
   end
 
-  def traitement_dossier_non_extirpable_en_cours(time, traitement_notification)
-    puts format("[Traitement][Non Extirpable] [%s] : traitement sur le fichier '%s'",
+  def traitement_notifie(time, traitement_notification)
+    puts format("[Traitement][Extirpable] [%s] : traitement sur le fichier '%s'",
                 time.strftime("%Y-%m-%d %H:%M:%S"), traitement_notification.nom_fichier)
   end
 
-  def analyse_en_cours(time, dossier_analyse)
+  def analyse_notifie(time, analyse_notification)
     puts format("[Analyse] [%s] : Le dossier %s à été analyse à %s%%", time.strftime("%Y-%m-%d %H:%M:%S"),
-                dossier_analyse.dossier, dossier_analyse.taux)
+                analyse_notification.dossier, analyse_notification.taux)
   end
 end
