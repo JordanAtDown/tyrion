@@ -11,19 +11,21 @@ class AnalyseEtape
   attr_accessor :dossiers_analyses
   attr_reader :noms_extirpable_par_dossier, :extracteur
 
+  EXTENSIONS_EXCLUS = /\.(?!(ini)$)([^.]+$)/
+
   def initialize(extracteur, noms_extirpable_par_dossier = {}, dossiers_analyses = {})
     @extracteur = extracteur
     @noms_extirpable_par_dossier = noms_extirpable_par_dossier
     @dossiers_analyses = dossiers_analyses
   end
 
-  def parcours(path_dossier)
-    dossier = File.dirname(path_dossier)
-    Dir.glob(path_dossier) do |fichier|
+  def parcours(dossier)
+    Dir.each_child(dossier) do |nom_fichier|
+      fichier = "#{dossier}/#{nom_fichier}"
       if File.file?(fichier)
-        extirpabilite_par(dossier, fichier)
+        extirpabilite_par(dossier, fichier) if File.extname(fichier) =~ EXTENSIONS_EXCLUS
       else
-        parcours("#{fichier}/*")
+        parcours(fichier)
         next
       end
     end

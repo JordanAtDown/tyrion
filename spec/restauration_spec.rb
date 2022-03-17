@@ -32,19 +32,19 @@ RSpec.describe Restauration do
       it "afin de reattribuer les metadatas, le nommage et l'emplacement des fichiers" do
         FileHelpers.build_fichiers(fichiers, @dossier_tmp[0])
         exif_manipulateur_mock = MiniExifToolManipulateur::ExifManipulateur.new
-        exif_manipulateur_mock.stubs(:set_datetimeoriginal).with("/tmp/test01/2012/02/20120228_155747.png", DateTime.new(2012, 2, 28, 15, 57, 47))
-        exif_manipulateur_mock.stubs(:set_datetimeoriginal).with("/tmp/test01/2012/02/IMG_20120203175810.jpeg", DateTime.new(2012, 2, 3, 17, 58, 10))
-        exif_manipulateur_mock.stubs(:set_datetimeoriginal).with("/tmp/test01/2012/02/05-02-2012 21-26-00.png", DateTime.new(2012, 2, 5, 21, 26, 0))
-        exif_manipulateur_mock.stubs(:set_datetimeoriginal).with("/tmp/test01/2012/01/P000053.png", DateTime.new(2012, 1, 1, 0, 0, 0))
-        exif_manipulateur_mock.stubs(:set_datetimeoriginal).with("/tmp/test01/2012/01/P000054.png", DateTime.new(2012, 1, 1, 0, 0, 0))
-        exif_manipulateur_mock.stubs(:set_datetimeoriginal).with("/tmp/test01/2012/01/P000056.png", DateTime.new(2012, 1, 1, 0, 0, 0))
+        exif_manipulateur_mock.stubs(:set_datetimeoriginal).with("#{FileHelpers::TMP}test01/2012/02/20120228_155747.png", DateTime.new(2012, 2, 28, 15, 57, 47))
+        exif_manipulateur_mock.stubs(:set_datetimeoriginal).with("#{FileHelpers::TMP}test01/2012/02/IMG_20120203175810.jpeg", DateTime.new(2012, 2, 3, 17, 58, 10))
+        exif_manipulateur_mock.stubs(:set_datetimeoriginal).with("#{FileHelpers::TMP}test01/2012/02/05-02-2012 21-26-00.png", DateTime.new(2012, 2, 5, 21, 26, 0))
+        exif_manipulateur_mock.stubs(:set_datetimeoriginal).with("#{FileHelpers::TMP}test01/2012/01/P000053.png", DateTime.new(2012, 1, 1, 0, 0, 0))
+        exif_manipulateur_mock.stubs(:set_datetimeoriginal).with("#{FileHelpers::TMP}test01/2012/01/P000054.png", DateTime.new(2012, 1, 1, 0, 0, 0))
+        exif_manipulateur_mock.stubs(:set_datetimeoriginal).with("#{FileHelpers::TMP}test01/2012/01/P000056.png", DateTime.new(2012, 1, 1, 0, 0, 0))
 
         Restauration.new(
           AnalyseEtape.new(ExtracteurParDate.new),
           TraitementDossierExtirpableEtape.new(ExtracteurParDate.new),
           TraitementDossierNonExtirpableEtape.new,
           ApplicationEtape.new(exif_manipulateur_mock)
-        ).process("#{@dossier_tmp[0]}/*", true)
+        ).process("#{@dossier_tmp[0]}", true)
 
         expect(FileHelpers.nombre_fichiers(@dossier_tmp[0])).to eql attendu.length
         attendu.each do |fichier|
@@ -57,4 +57,12 @@ RSpec.describe Restauration do
       end
     end
   end
+  # it "afin de reattribuer les metadatas, le nommage et l'emplacement des fichiers" do
+  #   Restauration.new(
+  #     AnalyseEtape.new(ExtracteurParDate.new),
+  #     TraitementDossierExtirpableEtape.new(ExtracteurParDate.new),
+  #     TraitementDossierNonExtirpableEtape.new,
+  #     ApplicationEtape.new(MiniExifToolManipulateur::ExifManipulateur.new)
+  #   ).process("/mnt/d/backup/test/Vault", false)
+  # end
 end
