@@ -1,39 +1,34 @@
 # frozen_string_literal: true
 
-require "observer"
 require "fileutils"
+require "logging"
 
 require "notification/application_notification"
 require "exif/mini_exiftool_manipulateur"
 
 # Définit l'étape d'application
 class ApplicationEtape
-  include Observable
-  
-  attr_reader :exif_manipulateur
-
-  def initialize(exif_manipulateur = nil)
+  def initialize(exif_manipulateur)
     @exif_manipulateur = exif_manipulateur
+    @log = Logging.logger[self]
   end
 
   def parcours(fichiers)
-    changed
     fichiers.each_pair do |key, value|
-      notify_observers(Time.now, ApplicationNotification.new(fichier))
+      @log.debug "Application sur le fichier '#{key}'"
       if File.file?(key)
         begin
           exif_manipulateur.set_datetimeoriginal(key, value.date)
           File.rename(key, value.path_nouveau_nom)
           FileUtils.mkdir_p(File.dirname(value.path_destination))
           FileUtils.move(value.path_nouveau_nom, value.path_destination)
-          notify_observers(Time.now, ApplicationNotification.new(fichier))
         rescue MiniExifToolManipulateur::ExifManipulateurErreur => e
-          notify_observers(Time.now, ApplicationNotification.new(fichier))
+          @log.fatal e.message
         rescue SystemCallError => e
-          notify_observers(Time.now, ApplicationNotification.new(fichier))
+          @log.fatal e.message
         end
       else
-        notify_observers(Time.now, ApplicationNotification.new(fichier))
+        @log.warn "le fichier '#{key}' ne sera pas traite"
       end
     end
   end

@@ -34,7 +34,7 @@ class ExtracteurParDate
 
       return value.call(nom)
     end
-    raise ExtractionErreur, "Aucune date ne peux être extraite"
+    raise ExtractionErreur, "Aucune date ne peux être extraite sur '#{nom}'"
   end
 
   def extirpabilite(nom)

@@ -18,8 +18,7 @@ RSpec.describe AnalyseEtape do
         ["les dossiers de l'année 2012", { "/2012/01" => ["01.png", "IMG_20210803175810.png", "03.png"],
                                            "/2012/02" => ["20151231_155747.png", "IMG_20210803175810.jpeg",
                                                           "05-11-2010 21-26-00.png"] }, { "/tmp/test01/2012/01" => 33,
-                                                                                          "/tmp/test01/2012/02" => 100 }],
-                                                                          
+                                                                                          "/tmp/test01/2012/02" => 100 }]                                                          
       ]
     end
     with_them do

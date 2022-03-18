@@ -10,10 +10,10 @@ RSpec.describe Startup do
 
   it "doit définir si le log à été défini" do
     configuration = Startup::Configuration.new(true, LoggerLevel::DEBUG, "#{FileHelpers::TMP}test01/log", Startup::RESTORE_CMD, DateTime.new(2022, 3, 18, 7, 45, 34))
-    expect(configuration.log_file).to be_truthy
+    expect(configuration.log_file?).to be_truthy
 
     configuration_sans_log = Startup::Configuration.new(true, LoggerLevel::DEBUG, "", Startup::RESTORE_CMD, DateTime.new(2022, 3, 18, 7, 45, 34))
-    expect(configuration_sans_log.log_file).to be_falsy
+    expect(configuration_sans_log.log_file?).to be_falsy
   end
 
   it "doit creer le dossier de l'emplacement de log" do

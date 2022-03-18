@@ -1,6 +1,5 @@
 # frozen_string_literal: true
 
-require "logging"
 require "thor"
 
 require_relative "tyrion/version"
@@ -17,7 +16,7 @@ require "extracteur_par_date"
 module Tyrion
   # Cli
   class CLI < Thor
-    desc "restore [path]", "Permet de restaurer les metadatas des photos"
+    desc "restore [path]", "Permet de restaurer les metadatas des fichiers"
     long_desc <<-LONGDESC
 
       Exemple d'utilisation
@@ -48,54 +47,20 @@ module Tyrion
 
         - Deplace les fichiers dans un sous-dossier par extension (ex: 2012/01/JPG, 2015/05/PNG)
     LONGDESC
-    option :log, :type => :string, :aliases => :l
+    option :log, :type => :string, :default => "", :aliases => :l
     option :level, :type => :string, :default => "info", :aliases => :lvl
     option :apply, :type => :boolean, :default => false, :aliases => :a
     def restore(path)
       level = Startup.log_level(options[:level])
       dossier_log = Startup.cree_le(options[:log])
-      Startup::Configuration.new(options[:apply], level, dossier_log, Startup::RESTORE_CMD, DateTime.now)
 
-      # logger = Logging.logger['example_logger']
-      # logger.level = :info
-      # Logging.logger["Restauration"].level = :debug
-
-      # logger.add_appenders \
-      #   Logging.appenders.stdout
-
-      # Logging.appenders.file(
-      #   'example.log',
-      #   :layout => Logging.layouts.pattern(
-      #     :pattern => '[%d] %-5l %c: %m\n',
-      #     :date_pattern => '%Y-%m-%d %H:%M:%S'
-      #   )
-      # )
-
-      # Logging.appenders.stdout(
-      #   'stdout',
-      #   :layout => Logging.layouts.pattern(
-      #     :pattern => '[%d] %-5l %c: %m\n',
-      #     :date_pattern => '%Y-%m-%d %H:%M:%S'
-      #   )
-      # )
-
-      # log = Logging.logger['restauration']
-      # log.add_appenders("stdout", "example.log")
-      # log.level = :debug
-
-      # log.debug "a very nice little debug message"
-      # log.info "things are operating nominally"
-      # log.warn "this is your last warning"
-      # log.error StandardError.new("something went horribly wrong")
-      # log.fatal "I Die!"
-
-      # Restauration.new(
-      #   AnalyseEtape.new(ExtracteurParDate.new),
-      #   TraitementDossierExtirpableEtape.new(ExtracteurParDate.new),
-      #   TraitementDossierNonExtirpableEtape.new,
-      #   ApplicationEtape.new(MiniExifToolManipulateur::ExifManipulateur.new),
-      #   Startup::Configuration.new(options[:apply], level, dossier_log, Startup::RESTORE_CMD, DateTime.now)
-      # ).process(path)
+      Restauration.new(
+        AnalyseEtape.new(ExtracteurParDate.new),
+        TraitementDossierExtirpableEtape.new(ExtracteurParDate.new),
+        TraitementDossierNonExtirpableEtape.new,
+        ApplicationEtape.new(MiniExifToolManipulateur::ExifManipulateur.new),
+        Startup::Configuration.new(options[:apply], level, dossier_log, Startup::RESTORE_CMD, DateTime.now)
+      ).process(path)
     end
   end
 end

@@ -1,6 +1,7 @@
 # frozen_string_literal: true
 
 require "fileutils"
+require "logging"
 
 # Startup
 module Startup
@@ -19,13 +20,24 @@ module Startup
       @date_execution = date_execution
     end
 
-    def log_file
+    def log_file?
       @dossier_log != ""
     end
 
     def log
       "#{@dossier_log}/#{APP_NOM.downcase}-#{RESTORE_CMD}_#{@date_execution.strftime("%Y_%m_%d-%H_%M_%S")}.log"
     end
+  end
+
+  class ConfigurationBuilder
+    def self.build
+    
+    end
+    
+  end
+
+  def self.start(configuration)
+    
   end
 
   def self.cree_le(dossier_log)
@@ -64,4 +76,48 @@ module LoggerLevel
   WARN = :warn
   ERROR = :error
   FATAL = :fatal
+end
+
+# Logging
+module TyrionLogging
+  PATTERN = Logging.layouts.pattern(
+    :pattern => "[%d] %-5l %c: %m\n",
+    :date_pattern => "%Y-%m-%d %H:%M:%S"
+  )
+  STDOUT = Logging.appenders.stdout("stdout", :layout => PATTERN)
+
+  # Définir le nom du fichier de log
+  file = Logging.appenders.file(
+    'example.log',
+    :layout => PATTERN
+  )
+
+  # Definit le niveau global
+  Logging.logger.root.level = :fatal
+  
+  # Definit les appenders de log
+  # Logging.logger.add_appenders(STDOUT)
+end
+
+class StartupBuilder
+  def self.build
+    
+  end
+
+  def initialize
+    Logging.appenders.stdout("stdout", :layout => PATTERN)
+    Logging.logger.add_appenders(STDOUT)
+  end
+
+  def set_log_file(log_file)
+    file_appender = Logging.appenders.file(
+      log_file,
+      :layout => PATTERN
+    )
+    Logging.logger.add_appenders(file_appender)
+  end
+
+  def set_log_level(level)
+    Logging.logger.root.level = level
+  end
 end
