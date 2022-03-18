@@ -1,6 +1,7 @@
 # frozen_string_literal: true
 
 require "exif/mini_exiftool_manipulateur"
+require "etape/exif_manipulateur"
 
 RSpec.describe MiniExifToolManipulateur do
   describe "doit modifier la metadata" do
@@ -46,7 +47,7 @@ RSpec.describe MiniExifToolManipulateur do
         mini_exiftool_manipulateur = MiniExifToolManipulateur::ExifManipulateur.new
 
         expect { mini_exiftool_manipulateur.set_datetimeoriginal(chemin_fichier, DateTime.new(2020, 2, 1, 1, 1, 1)) }
-          .to raise_error(MiniExifToolManipulateur::ExifManipulateurErreur, erreur_message)
+          .to raise_error(ExifManipulateur::ExifManipulateurErreur, erreur_message)
       end
 
       after do

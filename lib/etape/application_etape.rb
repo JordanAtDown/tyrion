@@ -4,7 +4,6 @@ require "fileutils"
 require "logging"
 
 require "notification/application_notification"
-require "exif/mini_exiftool_manipulateur"
 
 # Définit l'étape d'application
 class ApplicationEtape
@@ -22,7 +21,7 @@ class ApplicationEtape
           File.rename(key, value.path_nouveau_nom)
           FileUtils.mkdir_p(File.dirname(value.path_destination))
           FileUtils.move(value.path_nouveau_nom, value.path_destination)
-        rescue MiniExifToolManipulateur::ExifManipulateurErreur => e
+        rescue ExifManipulateur::ExifManipulateurErreur => e
           @log.fatal e.message
         rescue SystemCallError => e
           @log.fatal e.message
