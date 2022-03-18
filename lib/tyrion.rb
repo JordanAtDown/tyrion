@@ -1,8 +1,11 @@
 # frozen_string_literal: true
 
+require "logging"
+require "thor"
+
 require_relative "tyrion/version"
 require "tyrion"
-require "thor"
+require "startup"
 require "etape/analyse_etape"
 require "etape/application_etape"
 require "etape/traitement_dossier_extirpable_etape"
@@ -16,26 +19,83 @@ module Tyrion
   class CLI < Thor
     desc "restore [path]", "Permet de restaurer les metadatas des photos"
     long_desc <<-LONGDESC
-      Le paramétre --apply permet d'appliquer concretement la restauration des fichiers
 
-      Restaure les metadatas de fichiers.
+      Exemple d'utilisation
 
-        - Extrait si possible la date du nom du fichier (ex: 20151231_155723_011 -> 2015/12/31 15h57m23s)
+      > $ tyrion restore "/mnt/d/backup/Vault" --log "/tmp/tyrion" --level "war" --apply
 
-        - Extrait une date possible à partir de l'aborescence de l'emplacement (ex: 2012/01 -> 2012/01/01 00h00m00s)
+      les paramétres :
 
-        - Restaure la date de prise de vue qui est une metadata EXIF
+        [log, l] : permet de définir l'emplacement où sera verser le fichier 'tyrion_restore_yyy_mm_dd-hh_mm_ss.log' (ex : "/tmp/tyrion"), si il n'existe pas il sera crée
 
-        - Deplace les fichiers dans un sous-dossier extension (ex: 2012/01/JPG, 2015/05/PNG)
+        [level, lvl] : permet de définir le niveau de log (debug, info, warn, error, fatal) à afficher par défaut il est défini à 'info'
+
+        [apply, a] : permet d'appliquer la restauration des metadata
+
+      Parcours un dossier dans une arborescence défini "Vault/annee/mois/*.jpg,*.png,*.mp4" (ex: Vault/2021/01)
+
+      Restaure les metadatas de fichiers d'après les régles suivantes.
+
+        - Extrait la date du nom du fichier (ex: 20151231_155723_011 -> 2015/12/31 15h57m23s)
+
+        - Extrait une date possible à partir de l'arborescence de l'emplacement (ex: 2012/01 -> 2012/01/01 00h00m00s)
+
+        - Renomme les fichiers suivant le pattern suivant (photo_YYYY_MM_JJ-HH_MM_SS.*|video_YYYY_MM_JJ-HH_MM_SS.*) quand une date peut en être extrait
+
+        - Renomme par numérotation 001.*, 002.*, ... si aucun fichier contenu dans le dossier ANNEE/MOIS ne peux être extrait une date
+
+        - Restaure la date de prise de vue (date_time_orirignal) qui est une metadata EXIF
+
+        - Deplace les fichiers dans un sous-dossier par extension (ex: 2012/01/JPG, 2015/05/PNG)
     LONGDESC
-    option :apply, type: :boolean
+    option :log, :type => :string, :aliases => :l
+    option :level, :type => :string, :default => "info", :aliases => :lvl
+    option :apply, :type => :boolean, :default => false, :aliases => :a
     def restore(path)
-      Restauration.new(
-        AnalyseEtape.new(ExtracteurParDate.new),
-        TraitementDossierExtirpableEtape.new(ExtracteurParDate.new),
-        TraitementDossierNonExtirpableEtape.new,
-        ApplicationEtape.new(MiniExifToolManipulateur::ExifManipulateur.new)
-      ).process(path, options[:apply])
+      level = Startup.log_level(options[:level])
+      dossier_log = Startup.cree_le(options[:log])
+      Startup::Configuration.new(options[:apply], level, dossier_log, Startup::RESTORE_CMD, DateTime.now)
+
+      # logger = Logging.logger['example_logger']
+      # logger.level = :info
+      # Logging.logger["Restauration"].level = :debug
+
+      # logger.add_appenders \
+      #   Logging.appenders.stdout
+
+      # Logging.appenders.file(
+      #   'example.log',
+      #   :layout => Logging.layouts.pattern(
+      #     :pattern => '[%d] %-5l %c: %m\n',
+      #     :date_pattern => '%Y-%m-%d %H:%M:%S'
+      #   )
+      # )
+
+      # Logging.appenders.stdout(
+      #   'stdout',
+      #   :layout => Logging.layouts.pattern(
+      #     :pattern => '[%d] %-5l %c: %m\n',
+      #     :date_pattern => '%Y-%m-%d %H:%M:%S'
+      #   )
+      # )
+
+      # log = Logging.logger['restauration']
+      # log.add_appenders("stdout", "example.log")
+      # log.level = :debug
+
+      # log.debug "a very nice little debug message"
+      # log.info "things are operating nominally"
+      # log.warn "this is your last warning"
+      # log.error StandardError.new("something went horribly wrong")
+      # log.fatal "I Die!"
+
+      # Restauration.new(
+      #   AnalyseEtape.new(ExtracteurParDate.new),
+      #   TraitementDossierExtirpableEtape.new(ExtracteurParDate.new),
+      #   TraitementDossierNonExtirpableEtape.new,
+      #   ApplicationEtape.new(MiniExifToolManipulateur::ExifManipulateur.new),
+      #   Startup::Configuration.new(options[:apply], level, dossier_log, Startup::RESTORE_CMD, DateTime.now)
+      # ).process(path)
     end
   end
 end

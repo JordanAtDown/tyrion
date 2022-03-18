@@ -3,6 +3,7 @@ PATH
   specs:
     tyrion (0.1.0)
       exif (~> 2.2.3)
+      logging (~> 2.3.0logging)
       mini_exiftool_vendored (~> 9.2.7.v1)
 
 GEM
@@ -24,10 +25,15 @@ GEM
       rexml
     kramdown-parser-gfm (1.1.0)
       kramdown (~> 2.0)
+    little-plugger (1.1.4)
+    logging (2.3.0)
+      little-plugger (~> 1.1)
+      multi_json (~> 1.14)
     mini_exiftool (2.10.2)
     mini_exiftool_vendored (9.2.7.v1)
       mini_exiftool (>= 1.6.0)
     mocha (1.13.0)
+    multi_json (1.15.0)
     nokogiri (1.13.3-x86_64-linux)
       racc (~> 1.4)
     parallel (1.21.0)

@@ -1,5 +1,6 @@
 # frozen_string_literal: true
 
+# Converti une extension
 module DossierParExtension
   def self.defini_dossier_par(extension)
     if extension.downcase == ".jpeg"
