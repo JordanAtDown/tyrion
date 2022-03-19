@@ -16,7 +16,7 @@ RSpec.describe Restauration do
 
     where(:case_name, :fichiers, :attendu) do
       [
-        ["le dossier'",
+        ["le dossier",
           { "/2012/01" => ["P000053.png", "P000054.png", "P000056.png"],
             "/2012/02" => ["20120228_155747.png", "IMG_20120203175810.jpeg", "05-02-2012 21-26-00.png"] },
           [ "#{FileHelpers::TMP}test01/2012/01/PNG/001.png",
