@@ -1,6 +1,8 @@
 # frozen_string_literal: true
 
+require 'rspec/logging_helper'
 require "rspec-parameterized"
+require 'logging'
 
 require "tyrion"
 require "helpers/file_helpers"
@@ -8,6 +10,8 @@ require "helpers/exif_helpers"
 require "helpers/image_helpers"
 
 RSpec.configure do |config|
+  include RSpec::LoggingHelper
+  config.capture_log_messages
   # Including helpers
   config.include FileHelpers
   config.include ExifHelpers

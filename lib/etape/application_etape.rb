@@ -3,8 +3,6 @@
 require "fileutils"
 require "logging"
 
-require "notification/application_notification"
-
 # Définit l'étape d'application
 class ApplicationEtape
   def initialize(exif_manipulateur)
@@ -17,7 +15,7 @@ class ApplicationEtape
       @log.debug "Application sur le fichier '#{key}'"
       if File.file?(key)
         begin
-          exif_manipulateur.set_datetimeoriginal(key, value.date)
+          @exif_manipulateur.set_datetimeoriginal(key, value.date)
           File.rename(key, value.path_nouveau_nom)
           FileUtils.mkdir_p(File.dirname(value.path_destination))
           FileUtils.move(value.path_nouveau_nom, value.path_destination)

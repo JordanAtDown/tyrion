@@ -74,7 +74,7 @@ RSpec.describe ExtracteurParDate do
       it "ne contient pas une date" do
         expect do
           ExtracteurParDate.new.extraction_du(nom)
-        end.to raise_error(ExtractionErreur, "Aucune date ne peux être extraite")
+        end.to raise_error(ExtractionErreur, "Aucune date ne peux être extraite sur '#{nom}'")
       end
     end
   end

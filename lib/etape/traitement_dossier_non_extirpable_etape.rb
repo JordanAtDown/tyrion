@@ -2,7 +2,6 @@
 
 require "logging"
 
-require "notification/traitement_notification"
 require "etape/fichier"
 require "dedoublonneur"
 require "directory"

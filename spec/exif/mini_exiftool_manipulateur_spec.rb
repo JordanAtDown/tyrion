@@ -3,7 +3,7 @@
 require "exif/mini_exiftool_manipulateur"
 require "etape/exif_manipulateur"
 
-RSpec.describe MiniExifToolManipulateur do
+RSpec.describe MiniExiftoolManipulateur do
   describe "doit modifier la metadata" do
     before do
       @dossier_tmp = FileUtils.makedirs "#{FileHelpers::TMP}test01"
@@ -18,7 +18,7 @@ RSpec.describe MiniExifToolManipulateur do
       it do
         image = ImageHelpers.creer_("#{FileHelpers::TMP}test01", nom_fichier, ImageHelpers::IMAGE)
         
-        MiniExifToolManipulateur::ExifManipulateur.new.set_datetimeoriginal(image, date_time_original)
+        MiniExiftoolManipulateur.new.set_datetimeoriginal(image, date_time_original)
 
         expect(ExifHelpers.get_datetime(image)).to eql date_time_original.strftime("%Y:%m:%d %H:%M:%S")
       end
@@ -44,7 +44,7 @@ RSpec.describe MiniExifToolManipulateur do
       it do
         File.new(chemin_fichier, "a") if chemin_fichier != ""
         
-        mini_exiftool_manipulateur = MiniExifToolManipulateur::ExifManipulateur.new
+        mini_exiftool_manipulateur = MiniExiftoolManipulateur.new
 
         expect { mini_exiftool_manipulateur.set_datetimeoriginal(chemin_fichier, DateTime.new(2020, 2, 1, 1, 1, 1)) }
           .to raise_error(ExifManipulateur::ExifManipulateurErreur, erreur_message)

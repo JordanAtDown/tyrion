@@ -2,7 +2,6 @@
 
 require "logging"
 
-require "notification/traitement_notification"
 require "etape/fichier"
 require "dedoublonneur"
 
@@ -24,7 +23,7 @@ class TraitementDossierExtirpableEtape
         begin
           fichier = "#{dossier}/#{nom_fichier}"
           @log.debug "Traitement sur le fichier '#{fichier}'"
-          date_extraite = extracteur.extraction_du(File.basename(fichier, File.extname(fichier)))
+          date_extraite = @extracteur.extraction_du(File.basename(fichier, File.extname(fichier)))
           nom_attribue = dedoublonneur.dedoublonne_par_numerotation(date_extraite.strftime("photo_%Y_%m_%d-%H_%M_%S"))
           fichiers.store(fichier,
                         Fichier.new(nom_attribue, date_extraite, File.dirname(fichier), File.extname(fichier)))

@@ -23,10 +23,11 @@ RSpec.describe AnalyseEtape do
     end
     with_them do
       it "pour en definir le taux d'extirpabilite" do
-        FileHelpers.build_fichiers(fichiers, @dossier_tmp[0])
+        dossier_a_parcourir = @dossier_tmp[0]
+        FileHelpers.build_fichiers(fichiers, dossier_a_parcourir)
 
         analyse_etape = AnalyseEtape.new(ExtracteurParDate.new)
-        analyse_etape.parcours("#{@dossier_tmp[0]}")
+        analyse_etape.parcours(dossier_a_parcourir)
 
         expect(analyse_etape.dossiers_analyses).to eq attendu
       end
@@ -61,16 +62,24 @@ RSpec.describe AnalyseEtape do
   describe "doit pouvoir ajouter" do
     where(:case_name, :noms_extirpable_par_dossier, :dossier, :fichier, :attendu) do
       [
-        ["un fichier analyse au dossier '/tmp/vault/2022/02'", { "/tmp/vault/2022/02" => [true] },
-         "/tmp/vault/2022/02", "IMG_20190525_131228_BURST002", { "/tmp/vault/2022/02" => [true, true] }],
-        ["un nouveau dossier '/tmp/vault/2022/02'", {}, "/tmp/vault/2022/02", "Mes Photos0001",
-         { "/tmp/vault/2022/02" => [false] }]
+        ["un fichier analyse au dossier '/tmp/vault/2022/02'",
+          { "/tmp/vault/2022/02" => [true] },
+          "/tmp/vault/2022/02",
+          "IMG_20190525_131228_BURST002",
+          { "/tmp/vault/2022/02" => [true, true] }
+        ],
+        ["un nouveau dossier '/tmp/vault/2022/02'",
+          {},
+          "/tmp/vault/2022/02", 
+          "Mes Photos0001",
+          { "/tmp/vault/2022/02" => [false] }
+        ]
       ]
     end
     with_them do
-      it "afin de verifier tout tous les fichiers" do
-        expect(AnalyseEtape.new(ExtracteurParDate.new, noms_extirpable_par_dossier).extirpabilite_par(dossier,
-                                                                                                      fichier)).to eq attendu
+      it do
+        extirpable = AnalyseEtape.new(ExtracteurParDate.new, noms_extirpable_par_dossier).extirpabilite_par(dossier, fichier)
+        expect(extirpable).to eq attendu
       end
     end
   end

@@ -2,8 +2,6 @@
 
 require "logging"
 
-require "notification/analyse_notification"
-
 # Definit l'étape d'analyse
 class AnalyseEtape
   attr_reader :dossiers_analyses

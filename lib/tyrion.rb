@@ -59,7 +59,7 @@ module Tyrion
         TraitementDossierExtirpableEtape.new(ExtracteurParDate.new),
         TraitementDossierNonExtirpableEtape.new,
         ApplicationEtape.new(MiniExifToolManipulateur.new),
-        Startup::Configuration.new(options[:apply], level, dossier_log, Startup::RESTORE_CMD, DateTime.now)
+        nil
       ).process(path)
     end
   end
