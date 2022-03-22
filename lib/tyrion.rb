@@ -56,24 +56,17 @@ module Tyrion
     option :level, :type => :string, :default => "info", :aliases => :lvl
     option :apply, :type => :boolean, :default => false, :aliases => :a
     def restore(path_dossier)
-      StartupConfigurator.builder(DateTime.now, CommandeNom::RESTORE_CMD, Gem::Specification.name)
+      StartupConfigurator.builder(DateTime.now, CommandeNom::RESTORE_CMD, "tyrion")
                          .set_log_level(options[:level])
                          .set_log_file(options[:log])
                          .startup
-
-      configuration = Configuration.new(options[:apply])
-
-      log = Logging.logger[self]
-
-      log.debug "debug"
-
-      # Restauration.new(
-      #   AnalyseEtape.new(ExtracteurParDate.new),
-      #   TraitementDossierExtirpableEtape.new(ExtracteurParDate.new),
-      #   TraitementDossierNonExtirpableEtape.new,
-      #   ApplicationEtape.new(MiniExifToolManipulateur.new),
-      #   configuration
-      # ).process(path)
+      Restauration.new(
+        AnalyseEtape.new(ExtracteurParDate.new),
+        TraitementDossierExtirpableEtape.new(ExtracteurParDate.new),
+        TraitementDossierNonExtirpableEtape.new,
+        ApplicationEtape.new(MiniExifToolManipulateur.new),
+        Configuration.new(options[:apply])
+      ).process(path_dossier)
     end
   end
 end

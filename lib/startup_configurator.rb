@@ -28,12 +28,12 @@ class StartupConfigurator
   end
 
   def set_log_file(path_log)
-    dossier = Directory.cree_le(path_log)
-    if dossier != ""
-      @file_appender = Logging.appenders.file(
+    if Dir.exist?(Directory.cree_le(path_log))
+      file_appender = Logging.appenders.file(
         "#{path_log}/#{@app.downcase}-#{@commande}_#{@date_execution.strftime("%Y_%m_%d-%H_%M_%S")}.log",
         :layout => PATTERN
       )
+      Logging.logger.root.add_appenders(file_appender)
     end
     self
   end
