@@ -11,7 +11,7 @@ RSpec.describe AnalyseEtape do
     where(:case_name, :fichiers, :attendu, :stubs_return) do
       [
         ["le dossier '/annee/mois'",
-          { "/annee/mois" => ["01.ini, owncloud.log"] },
+          { "/annee/mois" => ["01.ini", "owncloud.log", ".owncloudsync.log", ".owncloudsync.log.1", ".sync_journal.db", ".sync_journal.db-shm", ".sync_journal.db-wal"] },
           {},
           {}
         ],
