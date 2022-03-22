@@ -4,7 +4,6 @@ require "rspec/expectations"
 
 require "etape/traitement_dossier_extirpable_etape"
 require "etape/fichier"
-require "extracteur_par_date"
 
 RSpec.describe TraitementDossierExtirpableEtape do
   describe "doit pouvoir parcourir" do
@@ -14,7 +13,9 @@ RSpec.describe TraitementDossierExtirpableEtape do
 
     where(:case_name, :dossiers, :fichiers, :attendu) do
       [
-        ["le dossier '/2012/08'", ["#{FileHelpers::TMP}test01/2012/08"], { "/2012/08" => ["IMG_20210803175810.jpg"] },
+        ["le dossier '/2012/08'", 
+          ["#{FileHelpers::TMP}test01/2012/08"],
+          { "/2012/08" => ["IMG_20210803175810.jpg"] },
          { "/tmp/test01/2012/08/IMG_20210803175810.jpg" =>
                   Fichier.new("photo_2021_08_03-17_58_10", DateTime.new(2021, 8, 3, 17, 58, 10), "/tmp/test01/2012/08", ".jpg") }]
       ]
@@ -22,8 +23,10 @@ RSpec.describe TraitementDossierExtirpableEtape do
     with_them do
       it "pour en definir les fichiers à traités" do
         FileHelpers.build_fichiers(fichiers, @dossier_tmp[0])
+        extracteur_mock = mock
+        extracteur_mock.stubs(:extraction_du).with("IMG_20210803175810").then.returns(DateTime.new(2021, 8, 3, 17, 58, 10))
 
-        traitement_etape = TraitementDossierExtirpableEtape.new(ExtracteurParDate.new)
+        traitement_etape = TraitementDossierExtirpableEtape.new(extracteur_mock)
         traitement_etape.parcours(dossiers)
         
         attendu.each_pair do |key, value|

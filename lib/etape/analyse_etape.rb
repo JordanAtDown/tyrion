@@ -6,7 +6,7 @@ require "logging"
 class AnalyseEtape
   attr_reader :dossiers_analyses
 
-  EXTENSIONS_EXCLUS = /\.(?!(ini)$)([^.]+$)/
+  EXTENSIONS_EXCLUS = /\.(?!(ini)$)([^.]+$)/.freeze
 
   def initialize(extracteur, noms_extirpable_par_dossier = {}, dossiers_analyses = {})
     @extracteur = extracteur

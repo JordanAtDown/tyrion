@@ -1,10 +1,15 @@
 # frozen_string_literal: true
 
 require "thor"
+require "date"
 
 require_relative "tyrion/version"
 require "tyrion"
-require "startup"
+
+require "configuration"
+require "startup_configurator"
+require "commande_nom"
+
 require "etape/analyse_etape"
 require "etape/application_etape"
 require "etape/traitement_dossier_extirpable_etape"
@@ -16,12 +21,12 @@ require "extracteur_par_date"
 module Tyrion
   # Cli
   class CLI < Thor
-    desc "restore [path]", "Permet de restaurer les metadatas des fichiers"
+    desc "restore [path_dossier]", "Permet de restaurer les metadatas des fichiers"
     long_desc <<-LONGDESC
 
       Exemple d'utilisation
 
-      > $ tyrion restore "/mnt/d/backup/Vault" --log "/tmp/tyrion" --level "war" --apply
+      > $ tyrion restore "/mnt/d/backup/Vault" --log "/tmp/tyrion" --level "warn" --apply
 
       les paramétres :
 
@@ -50,17 +55,25 @@ module Tyrion
     option :log, :type => :string, :default => "", :aliases => :l
     option :level, :type => :string, :default => "info", :aliases => :lvl
     option :apply, :type => :boolean, :default => false, :aliases => :a
-    def restore(path)
-      level = Startup.log_level(options[:level])
-      dossier_log = Startup.cree_le(options[:log])
+    def restore(path_dossier)
+      StartupConfigurator.builder(DateTime.now, CommandeNom::RESTORE_CMD, Gem::Specification.name)
+                         .set_log_level(options[:level])
+                         .set_log_file(options[:log])
+                         .startup
 
-      Restauration.new(
-        AnalyseEtape.new(ExtracteurParDate.new),
-        TraitementDossierExtirpableEtape.new(ExtracteurParDate.new),
-        TraitementDossierNonExtirpableEtape.new,
-        ApplicationEtape.new(MiniExifToolManipulateur.new),
-        nil
-      ).process(path)
+      configuration = Configuration.new(options[:apply])
+
+      log = Logging.logger[self]
+
+      log.debug "debug"
+
+      # Restauration.new(
+      #   AnalyseEtape.new(ExtracteurParDate.new),
+      #   TraitementDossierExtirpableEtape.new(ExtracteurParDate.new),
+      #   TraitementDossierNonExtirpableEtape.new,
+      #   ApplicationEtape.new(MiniExifToolManipulateur.new),
+      #   configuration
+      # ).process(path)
     end
   end
 end

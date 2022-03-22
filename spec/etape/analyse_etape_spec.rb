@@ -1,7 +1,6 @@
 # frozen_string_literal: true
 
 require "etape/analyse_etape"
-require "extracteur_par_date"
 
 RSpec.describe AnalyseEtape do
   describe "doit pouvoir parcourir" do
@@ -9,24 +8,33 @@ RSpec.describe AnalyseEtape do
       @dossier_tmp = FileUtils.makedirs "#{FileHelpers::TMP}test01"
     end
 
-    where(:case_name, :fichiers, :attendu) do
+    where(:case_name, :fichiers, :attendu, :stubs_return) do
       [
-        ["le dossier '/annee/mois'", { "/annee/mois" => ["01.ini"] },
-         {}],
-        ["le dossier '/annee/mois'", { "/annee/mois" => ["01.jpg", "IMG_20210803175810.jpg", "03.jpg"] },
-         { "/tmp/test01/annee/mois" => 33 }],
-        ["les dossiers de l'année 2012", { "/2012/01" => ["01.png", "IMG_20210803175810.png", "03.png"],
-                                           "/2012/02" => ["20151231_155747.png", "IMG_20210803175810.jpeg",
-                                                          "05-11-2010 21-26-00.png"] }, { "/tmp/test01/2012/01" => 33,
-                                                                                          "/tmp/test01/2012/02" => 100 }]                                                          
+        ["le dossier '/annee/mois'",
+          { "/annee/mois" => ["01.ini"] },
+          {},
+          {}
+        ],
+        ["le dossier '/annee/mois'",
+          { "/annee/mois" => ["01.jpg", "IMG_20210803175810.jpg", "03.jpg"] },
+          { "/tmp/test01/annee/mois" => 33 },
+          { "/tmp/test01/annee/mois/01.jpg" => false,
+            "/tmp/test01/annee/mois/IMG_20210803175810.jpg" => true,
+            "/tmp/test01/annee/mois/03.jpg" => false
+          }
+        ]
       ]
     end
     with_them do
       it "pour en definir le taux d'extirpabilite" do
         dossier_a_parcourir = @dossier_tmp[0]
         FileHelpers.build_fichiers(fichiers, dossier_a_parcourir)
+        extracteur_mock = mock
+        stubs_return.each_pair do |key, value|
+          extracteur_mock.stubs(:extirpabilite).with(key).then.returns(value)
+        end
 
-        analyse_etape = AnalyseEtape.new(ExtracteurParDate.new)
+        analyse_etape = AnalyseEtape.new(extracteur_mock)
         analyse_etape.parcours(dossier_a_parcourir)
 
         expect(analyse_etape.dossiers_analyses).to eq attendu
@@ -53,32 +61,41 @@ RSpec.describe AnalyseEtape do
     end
     with_them do
       it "le taux d'extirpabilite" do
-        expect(AnalyseEtape.new(ExtracteurParDate.new,
+        extracteur_mock = mock
+        extracteur_mock.expects(:extirpabilite).never
+
+        expect(AnalyseEtape.new(extracteur_mock,
                                 noms_extirpable_par_dossier).calcul_taux_d_extirpabilite_par(dossier)).to eq attendu
       end
     end
   end
 
   describe "doit pouvoir ajouter" do
-    where(:case_name, :noms_extirpable_par_dossier, :dossier, :fichier, :attendu) do
+    where(:case_name, :noms_extirpable_par_dossier, :dossier, :fichier, :attendu, :stubs_return) do
       [
         ["un fichier analyse au dossier '/tmp/vault/2022/02'",
           { "/tmp/vault/2022/02" => [true] },
           "/tmp/vault/2022/02",
           "IMG_20190525_131228_BURST002",
-          { "/tmp/vault/2022/02" => [true, true] }
+          { "/tmp/vault/2022/02" => [true, true] },
+          true
         ],
         ["un nouveau dossier '/tmp/vault/2022/02'",
           {},
           "/tmp/vault/2022/02", 
           "Mes Photos0001",
-          { "/tmp/vault/2022/02" => [false] }
+          { "/tmp/vault/2022/02" => [false] },
+          false
         ]
       ]
     end
     with_them do
       it do
-        extirpable = AnalyseEtape.new(ExtracteurParDate.new, noms_extirpable_par_dossier).extirpabilite_par(dossier, fichier)
+        extracteur_mock = mock
+        extracteur_mock.stubs(:extirpabilite).with(fichier).returns(stubs_return)
+
+        extirpable = AnalyseEtape.new(extracteur_mock, noms_extirpable_par_dossier).extirpabilite_par(dossier, fichier)
+
         expect(extirpable).to eq attendu
       end
     end
