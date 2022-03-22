@@ -16,7 +16,6 @@ class ApplicationEtape
       if File.file?(key)
         begin
           @exif_manipulateur.set_datetimeoriginal(key, value.date)
-          # Faire le rename avec le move
           File.rename(key, value.path_nouveau_nom)
           FileUtils.mkdir_p(File.dirname(value.path_destination))
           FileUtils.move(value.path_nouveau_nom, value.path_destination)

@@ -4,7 +4,7 @@ require "logging"
 
 # Definit l'étape d'analyse
 class AnalyseEtape
-  attr_reader :dossiers_analyses
+  attr_reader :dossiers_analyses, :nombre_fichiers_analyses
 
   EXTENSIONS_EXCLUS = /\.(?!(ini|log|1|db-shm|db-wal|db)$)([^.]+$)/.freeze
 
@@ -13,6 +13,7 @@ class AnalyseEtape
     @noms_extirpable_par_dossier = noms_extirpable_par_dossier
     @dossiers_analyses = dossiers_analyses
     @log = Logging.logger[self]
+    @nombre_fichiers_analyses = 0
   end
 
   def parcours(dossier)
@@ -22,6 +23,7 @@ class AnalyseEtape
       if File.file?(fichier)
         if File.extname(fichier) =~ EXTENSIONS_EXCLUS
           extirpabilite_par(dossier, fichier)
+          @nombre_fichiers_analyses += 1
         else
           @log.warn "Le fichier '#{fichier}' ne sera pas analysé"
         end
@@ -56,7 +58,7 @@ class AnalyseEtape
     else
       nom_extirpable_par_dossier = @noms_extirpable_par_dossier.merge!({ path_dossier => [].push(extirpable) })
     end
-    @log.debug "Le fichier '#{path_dossier}/#{nom_fichier}' est extirpable : #{extirpable}"
+    @log.debug "Le fichier '#{nom_fichier}' est extirpable : #{extirpable}"
     nom_extirpable_par_dossier
   end
 end

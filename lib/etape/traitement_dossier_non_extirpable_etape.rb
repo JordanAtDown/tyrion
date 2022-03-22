@@ -16,8 +16,8 @@ class TraitementDossierNonExtirpableEtape
   end
 
   def parcours(dossiers)
-    @log.info "Traitement sur le dossier '#{dossiers}'"
     dossiers.each do |dossier|
+      @log.info "Traitement sur le dossier '#{dossier}'"
       dedoublonneur = Dedoublonneur.new
       Dir.each_child(dossier) do |nom_fichier|
         fichier = "#{dossier}/#{nom_fichier}"
@@ -36,9 +36,5 @@ class TraitementDossierNonExtirpableEtape
         end
       end
     end
-  end
-
-  def get_par_type(type)
-    @fichiers.select { |_key, value| value.type == type }
   end
 end

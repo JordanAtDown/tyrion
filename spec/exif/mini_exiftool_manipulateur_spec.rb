@@ -3,6 +3,8 @@
 require "exif/mini_exiftool_manipulateur"
 require "etape/exif_manipulateur"
 
+require "mini_exiftool"
+
 RSpec.describe MiniExiftoolManipulateur do
   describe "doit modifier la metadata" do
     before do
@@ -16,11 +18,11 @@ RSpec.describe MiniExiftoolManipulateur do
     end
     with_them do
       it do
-        image = ImageHelpers.creer_("#{FileHelpers::TMP}test01", nom_fichier, ImageHelpers::IMAGE)
+        image = ImageHelpers.creer_("#{FileHelpers::TMP}test01", nom_fichier, FileHelpers::IMAGE)
         
         MiniExiftoolManipulateur.new.set_datetimeoriginal(image, date_time_original)
 
-        expect(ExifHelpers.get_datetime(image)).to eql date_time_original.strftime("%Y:%m:%d %H:%M:%S")
+        expect(ExifHelpers.get_datetime(image)).to be date_time_original
       end
 
       after do
@@ -54,5 +56,19 @@ RSpec.describe MiniExiftoolManipulateur do
         FileUtils.rm_rf(@dossier_tmp[0])
       end
     end
+  end
+
+  before do
+    @dossier_tmp = FileUtils.makedirs "#{FileHelpers::TMP}test05"
+  end
+  it do
+    video = ImageHelpers.creer_("#{FileHelpers::TMP}test05", "video_2020_02_01-01-01-01", FileHelpers::VIDEO, "mp4")
+
+    MiniExiftoolManipulateur.new.set_datetimeoriginal(video, DateTime.new(2020, 2, 1, 1, 1, 1))
+
+    expect(ExifHelpers.get_datetime(video)).to be DateTime.new(2020, 2, 1, 1, 1, 1)
+  end
+  after do
+    FileUtils.rm_rf(@dossier_tmp[0])
   end
 end

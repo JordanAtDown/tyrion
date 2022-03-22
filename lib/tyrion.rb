@@ -64,7 +64,7 @@ module Tyrion
         AnalyseEtape.new(ExtracteurParDate.new),
         TraitementDossierExtirpableEtape.new(ExtracteurParDate.new),
         TraitementDossierNonExtirpableEtape.new,
-        ApplicationEtape.new(MiniExifToolManipulateur.new),
+        ApplicationEtape.new(MiniExiftoolManipulateur.new),
         Configuration.new(options[:apply])
       ).process(path_dossier)
     end

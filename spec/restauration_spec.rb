@@ -7,6 +7,11 @@ require "etape/application_etape"
 require "restauration"
 require "configuration"
 
+
+require "startup_configurator"
+require "extracteur_par_date"
+require "exif/mini_exiftool_manipulateur"
+
 RSpec.describe Restauration do
   describe "doit restaurer" do
     before do

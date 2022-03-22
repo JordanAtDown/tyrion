@@ -1,9 +1,10 @@
 # frozen_string_literal: true
 
-require "exif"
+require "mini_exiftool"
 
+# Exif helpers
 module ExifHelpers
   def self.get_datetime(fichier)
-    Exif::Data.new(File.open(fichier)).date_time_original
+    MiniExiftool.new(fichier).date_time_original
   end
 end

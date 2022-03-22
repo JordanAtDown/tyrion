@@ -8,12 +8,13 @@ RSpec.describe AnalyseEtape do
       @dossier_tmp = FileUtils.makedirs "#{FileHelpers::TMP}test01"
     end
 
-    where(:case_name, :fichiers, :attendu, :stubs_return) do
+    where(:case_name, :fichiers, :attendu, :stubs_return, :nombres_fichiers_analyses) do
       [
         ["le dossier '/annee/mois'",
           { "/annee/mois" => ["01.ini", "owncloud.log", ".owncloudsync.log", ".owncloudsync.log.1", ".sync_journal.db", ".sync_journal.db-shm", ".sync_journal.db-wal"] },
           {},
-          {}
+          {},
+          0
         ],
         ["le dossier '/annee/mois'",
           { "/annee/mois" => ["01.jpg", "IMG_20210803175810.jpg", "03.jpg"] },
@@ -21,7 +22,8 @@ RSpec.describe AnalyseEtape do
           { "/tmp/test01/annee/mois/01.jpg" => false,
             "/tmp/test01/annee/mois/IMG_20210803175810.jpg" => true,
             "/tmp/test01/annee/mois/03.jpg" => false
-          }
+          },
+          3
         ]
       ]
     end
@@ -38,6 +40,7 @@ RSpec.describe AnalyseEtape do
         analyse_etape.parcours(dossier_a_parcourir)
 
         expect(analyse_etape.dossiers_analyses).to eq attendu
+        expect(analyse_etape.nombre_fichiers_analyses).to eq nombres_fichiers_analyses
       end
 
       after do
