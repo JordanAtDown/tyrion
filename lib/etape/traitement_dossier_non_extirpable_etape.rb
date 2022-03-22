@@ -37,4 +37,8 @@ class TraitementDossierNonExtirpableEtape
       end
     end
   end
+
+  def get_par_type(type)
+    @fichiers.select { |_key, value| value.type == type }
+  end
 end

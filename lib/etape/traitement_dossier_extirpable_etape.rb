@@ -4,6 +4,7 @@ require "logging"
 
 require "etape/fichier"
 require "dedoublonneur"
+require "nom_attributeur"
 
 # Définit l'étape de traitement de dossier extirpable
 class TraitementDossierExtirpableEtape
@@ -24,13 +25,17 @@ class TraitementDossierExtirpableEtape
           fichier = "#{dossier}/#{nom_fichier}"
           @log.debug "Traitement sur le fichier '#{fichier}'"
           date_extraite = @extracteur.extraction_du(File.basename(fichier, File.extname(fichier)))
-          nom_attribue = dedoublonneur.dedoublonne_par_numerotation(date_extraite.strftime("photo_%Y_%m_%d-%H_%M_%S"))
-          fichiers.store(fichier,
+          nom_attribue = dedoublonneur.dedoublonne_par_numerotation(NomAttributeur.attribut_par(File.extname(fichier), date_extraite))
+          @fichiers.store(fichier,
                         Fichier.new(nom_attribue, date_extraite, File.dirname(fichier), File.extname(fichier)))
         rescue ExtractionErreur => e
           @log.error e.message
         end
       end
     end
+  end
+
+  def get_par_type(type)
+    @fichiers.select { |_key, value| value.type == type }
   end
 end
