@@ -23,7 +23,7 @@ class TraitementDossierNonExtirpableEtape
         fichier = "#{dossier}/#{nom_fichier}"
         @log.debug "Traitement sur le fichier '#{fichier}'"
         if File.file?(fichier)
-          numero_attribue = dedoublonneur.attribution_par_numero
+          numero_attribue = dedoublonneur.attribution_par_numero(File.extname(fichier))
           fichiers.store(
             fichier,
             Fichier.new(

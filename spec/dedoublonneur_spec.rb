@@ -22,17 +22,17 @@ RSpec.describe Dedoublonneur do
   end
 
   describe "doit pouvoir dedoublonner" do
-    where(:case_name, :numeros_attribues, :attendu) do
+    where(:case_name, :noms_attribues_par_extension, :extension, :attendu) do
       [
-        ["le numéro '001'", [], "001"],
-        ["le numéro '003'", %w[001 002], "003"],
-        ["le numéro '010'", %w[001 002 003 004 005 006 007 008 009], "010"]
+        ["le numéro '001'", {}, "jpg", "001"],
+        ["le numéro '003'", { "photo" => ["001", "002"] }, "jpg", "003"],
+        ["le numéro '002'", { "photo" => ["001", "002"], "video" => ["001"] }, "mp4", "002"],
       ]
     end
     with_them do
       it "pour attribuer une numerotation" do
-        dedoublonneur = Dedoublonneur.new(numeros_attribues)
-        expect(dedoublonneur.attribution_par_numero).to eq attendu
+        dedoublonneur = Dedoublonneur.new([], noms_attribues_par_extension)
+        expect(dedoublonneur.attribution_par_numero(extension)).to eq attendu
       end
     end
   end
