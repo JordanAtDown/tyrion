@@ -4,7 +4,6 @@ PATH
     tyrion (1.0.0)
       logging (~> 2.3.0)
       mini_exiftool_vendored (~> 9.2.7.v1)
-      taglib-ruby (~> 1.1.0)
 
 GEM
   remote: https://rubygems.org/
@@ -99,7 +98,6 @@ GEM
       thor (~> 1.0)
       tilt (~> 2.0)
       yard (~> 0.9, >= 0.9.24)
-    taglib-ruby (1.1.0)
     thor (1.2.1)
     tilt (2.0.10)
     unicode-display_width (2.1.0)

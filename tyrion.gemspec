@@ -32,7 +32,6 @@ Gem::Specification.new do |spec|
   spec.add_development_dependency "solargraph", "~> 0.44.3"
   spec.add_dependency "mini_exiftool_vendored", "~> 9.2.7.v1"
   spec.add_dependency "logging", "~> 2.3.0"
-  spec.add_dependency "taglib-ruby", "~> 1.1.0"
   # For more information and examples about making a new gem, check out our
   # guide at: https://bundler.io/guides/creating_gem.html
 end
