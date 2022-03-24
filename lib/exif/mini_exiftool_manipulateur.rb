@@ -8,13 +8,23 @@ require "etape/exif_manipulateur"
 class MiniExiftoolManipulateur
   include ExifManipulateur
   def set_datetimeoriginal(fichier, datetimeoriginal)
-    begin
-      image = MiniExiftool.new(fichier)
-      image.datetimeoriginal = datetimeoriginal
-      image.save
-      image
-    rescue MiniExiftool::Error => e
-      raise ExifManipulateur::ExifManipulateurErreur, e
-    end
+    exif = MiniExiftool.new(fichier)
+    exif.datetimeoriginal = datetimeoriginal
+    exif.save
+    exif
+  rescue MiniExiftool::Error => e
+    raise ExifManipulateur::ExifManipulateurErreur, e
+  end
+
+  def datetimeoriginal?(fichier)
+    !MiniExiftool.new(fichier).datetimeoriginal.nil?
+  rescue MiniExiftool::Error => e
+    raise ExifManipulateur::ExifManipulateurErreur, e
+  end
+
+  def get_datetimeoriginal(fichier)
+    DateTime.parse(MiniExiftool.new(fichier).datetimeoriginal.to_s)
+  rescue MiniExiftool::Error => e
+    raise ExifManipulateur::ExifManipulateurErreur, e
   end
 end

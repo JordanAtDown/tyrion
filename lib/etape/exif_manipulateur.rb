@@ -8,4 +8,12 @@ module ExifManipulateur
   def set_datetimeoriginal(_fichier, _datetimeoriginal)
     raise "Non implémenté"
   end
+
+  def datetimeoriginal?(_fichier)
+    raise "Non implémenté"
+  end
+
+  def get_datetimeoriginal(_fichier)
+    raise "Non implémenté"
+  end
 end
