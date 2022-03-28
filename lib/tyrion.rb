@@ -111,7 +111,8 @@ module Tyrion
       Catalogage::Cataloger.new(
         Catalogage::Etape::Analyse.new(ExtracteurParDate.new, MiniExiftoolManipulateur.new),
         Catalogage::Etape::NomAttribuer.new,
-        Catalogage::Etape::Application.new(MiniExiftoolManipulateur.new)
+        Catalogage::Etape::Application.new(MiniExiftoolManipulateur.new),
+        Catalogage::Etape::Verificateur.new
       ).process(path_dossier, configuration)
     end
   end
