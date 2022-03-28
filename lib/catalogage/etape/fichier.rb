@@ -1,17 +1,32 @@
 # frozen_string_literal: true
 
-require "dossier_par_extension"
-require "classificateur_par_extension"
+module Catalogage
+  module Etape
+    # Fichier
+    class Fichier
+      attr_writer :nom_attribue
+      attr_reader :extension, :date_extraite, :exif, :path
 
-# Fichier
-class Fichier
-  attr_reader :nom_attribue, :date, :path, :extension, :type
+      def initialize(path, extension, date_extraite, exif, nom_attribue = nil)
+        @date_extraite = date_extraite
+        @path = path
+        @extension = extension
+        @type = ClassificateurParExtensions.get_type(extension)
+        @exif = exif
+        @nom_attribue = nom_attribue
+      end
 
-  def initialize(nom_attribue, date, path, extension)
-    @nom_attribue = nom_attribue
-    @date = date
-    @path = path
-    @extension = extension
-    @type = ClassificateurParExtensions.get_type(extension)
+      def path_destination
+        if !@date_extraite.nil?
+          "#{@date_extraite.year}/#{format("%02d", @date_extraite.month)}/#{DossierParExtension.defini_dossier_par(@extension)}"
+        else
+          "none/#{DossierParExtension.defini_dossier_par(@extension)}"
+        end
+      end
+
+      def path_nouveau_nom(destination)
+        "#{destination}/#{@nom_attribue}#{@extension.downcase}"
+      end
+    end
   end
 end

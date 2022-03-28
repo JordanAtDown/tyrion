@@ -10,6 +10,10 @@ require "configuration"
 require "startup_configurator"
 require "commande_nom"
 
+require "catalogage/cataloger"
+require "catalogage/etape/analyse"
+require "catalogage/etape/application"
+require "catalogage/etape/nom_attribuer"
 require "etape/analyse_etape"
 require "etape/application_etape"
 require "etape/traitement_dossier_extirpable_etape"
@@ -67,6 +71,49 @@ module Tyrion
         ApplicationEtape.new(MiniExiftoolManipulateur.new),
         Configuration.new(options[:apply])
       ).process(path_dossier)
+    end
+
+    desc "catalogue [path_dossier] [destination]", "Permet de trier et ranger les fichiers d'un dossier vers un autre"
+    long_desc <<-LONGDESC
+
+      Exemple d'utilisation
+
+      > $ tyrion catalog "/mnt/d/backup/camera" "/mnt/d/backup/Vault" --log "/tmp/tyrion" --level "warn" --apply
+
+      les paramétres :
+
+        [log, l] : permet de définir l'emplacement où sera verser le fichier 'tyrion_restore_yyy_mm_dd-hh_mm_ss.log' (ex : "/tmp/tyrion"), si il n'existe pas il sera crée
+
+        [level, lvl] : permet de définir le niveau de log (debug, info, warn, error, fatal) à afficher par défaut il est défini à 'info'
+
+        [apply, a] : permet d'appliquer le catalogage, renommage et déplacé les fichiers
+    LONGDESC
+    option :log, :type => :string, :default => "", :aliases => :l
+    option :level, :type => :string, :default => "info", :aliases => :lvl
+    option :apply, :type => :boolean, :default => false, :aliases => :a
+    def catalog(path_dossier, destination)
+      StartupConfigurator.builder(DateTime.now, CommandeNom::CATALOG_CMD, "tyrion")
+                         .set_log_level(options[:level])
+                         .set_log_file(options[:log])
+                         .startup
+
+      configuration = Configuration.new(options[:apply])
+
+      if !Dir.exist?(path_dossier)
+        FileUtils.mkdir_p(dossier)
+      end
+
+      if !Dir.exist?(destination)
+        FileUtils.mkdir_p(destination)
+        configuration.destination = destination
+      end
+
+      Catalogage::Cataloger.new(
+        Catalogage::Etape::Analyse.new(ExtracteurParDate.new, MiniExiftoolManipulateur.new),
+        Catalogage::Etape::NomAttribuer.new,
+        Catalogage::Etape::Application.new(MiniExiftoolManipulateur.new),
+        Catalogage::Etape::Verificateur.new
+      ).process(path_dossier, configuration)
     end
   end
 end
