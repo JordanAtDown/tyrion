@@ -14,7 +14,7 @@ module Catalogage
       @analyse.analyser(dossier)
       @nom_attributeur.attribut(@analyse.fichiers_analyses)
       @verificateur.index(@analyse.fichiers_analyses, configuration.destination)
-      if configuration.apply && !@verificateur.conflit?
+      if configuration.apply && !@verificateur.conflit.size.positive?
         @application.applique(@analyse.fichiers_analyses, configuration.destination)
       end
     end
