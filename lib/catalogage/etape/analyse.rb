@@ -14,9 +14,11 @@ module Catalogage
         @extracteur = extracteur
         @exif_manipulateur = exif_manipulateur
         @fichiers_analyses = fichiers_analyses
+        @log = Logging.logger[self]
       end
 
       def analyser(dossier)
+        @log.debug "Parcours du dossier '#{dossier}'"
         Dir.each_child(dossier) do |nom_fichier|
           fichier = "#{dossier}/#{nom_fichier}"
           if File.file?(fichier)
@@ -29,7 +31,11 @@ module Catalogage
               elsif @extracteur.extirpabilite(fichier)
                 date_extraite = @extracteur.extraction_du(File.basename(fichier, File.extname(fichier)))
               end
+              @log.debug "Le fichier '#{fichier}' à une date extraite au #{date_extraite}"
+              @log.debug "La date extraite viens des metadata 'datetimeoriginal' : #{exif ? "oui" : "non"}"
               ajoute_analyse Fichier.new(fichier, File.extname(fichier), date_extraite, exif)
+            else
+              @log.warn "Le fichier '#{fichier}' ne sera pas analysé"
             end
           else
             analyser(fichier)
@@ -51,6 +57,7 @@ module Catalogage
         else
           @fichiers_analyses.store(path_destination, [].push(fichier_analyse))
         end
+        @log.info "Le fichier '#{fichier_analyse.path}' sera versé vers #{path_destination}"
       end
     end
   end

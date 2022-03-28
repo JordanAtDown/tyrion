@@ -9,10 +9,10 @@ module Catalogage
       @application = application
     end
     
-    def process(dossier, destination)
+    def process(dossier, configuration)
       @analyse.analyser(dossier)
       @nom_attributeur.attribut(@analyse.fichiers_analyses)
-      @application.applique(@analyse.fichiers_analyses, destination)
+      @application.applique(@analyse.fichiers_analyses, configuration.destination) if configuration.apply
     end
   end
 end
