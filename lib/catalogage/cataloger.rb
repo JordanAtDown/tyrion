@@ -8,12 +8,14 @@ module Catalogage
       @nom_attributeur = nom_attributeur
       @application = application
       @verificateur = verificateur
+      @log = Logging.logger[self]
     end
     
     def process(dossier, configuration)
       @analyse.analyser(dossier)
       @nom_attributeur.attribut(@analyse.fichiers_analyses)
       @verificateur.index(@analyse.fichiers_analyses, configuration.destination)
+      @log.info "Fichiers en conflits : #{@verificateur.conflit.keys}"
       if configuration.apply && !@verificateur.conflit.size.positive?
         @application.applique(@analyse.fichiers_analyses, configuration.destination)
       end
