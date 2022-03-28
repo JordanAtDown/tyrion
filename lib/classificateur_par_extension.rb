@@ -5,7 +5,7 @@ require "file_type"
 module ClassificateurParExtensions
   EXTENSIONS_PAR_PREFIXE = {
     /jpg|jpeg|png|raw/ => FileType::PHOTO,
-    /mp4/ => FileType::VIDEO
+    /mp4|mov/ => FileType::VIDEO
   }.freeze
 
   def self.get_type(extension)
