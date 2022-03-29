@@ -11,18 +11,18 @@ RSpec.describe MiniExiftoolManipulateur do
       @dossier_tmp = FileUtils.makedirs "#{FileHelpers::TMP}test01"
     end
 
+    after do
+      FileUtils.rm_rf(@dossier_tmp[0])
+    end
+
     it "date time original défini" do
       image = ImageHelpers.creer_("#{FileHelpers::TMP}test01", "photo_2020_02_01-01-01-01", FileHelpers::IMAGE, ".jpeg")
       MiniExiftoolManipulateur.new.set_datetimeoriginal(image, DateTime.new(2020, 2, 1, 1, 1, 1, "+1"))
-      expect(MiniExiftoolManipulateur.new.datetimeoriginal?(image)).to be_truthy
+      expect(MiniExiftoolManipulateur.new).to be_datetimeoriginal(image)
 
       video = ImageHelpers.creer_("#{FileHelpers::TMP}test01", "video_2020_02_01-01-01-01", FileHelpers::VIDEO, ".mp4")
       MiniExiftoolManipulateur.new.set_datetimeoriginal(video, nil)
-      expect(MiniExiftoolManipulateur.new.datetimeoriginal?(video)).to be_falsy
-    end
-
-    after do
-      FileUtils.rm_rf(@dossier_tmp[0])
+      expect(MiniExiftoolManipulateur.new).not_to be_datetimeoriginal(video)
     end
   end
 
@@ -33,8 +33,10 @@ RSpec.describe MiniExiftoolManipulateur do
 
     where(:case_name, :nom_fichier, :date_time_original, :type, :extension) do
       [
-        ["Date time original au '2020:02:01 01:01:01'", "photo_2020_02_01-01-01-01", DateTime.new(2020, 2, 1, 1, 1, 1, "+1"), FileHelpers::IMAGE, ".jpeg"],
-        ["Date time original au '2021:03:02 10:05:52'", "video_2020_02_01-01-01-01", DateTime.new(2021, 3, 2, 10, 5, 52), FileHelpers::VIDEO, ".mp4"]
+        ["Date time original au '2020:02:01 01:01:01'", "photo_2020_02_01-01-01-01",
+         DateTime.new(2020, 2, 1, 1, 1, 1, "+1"), FileHelpers::IMAGE, ".jpeg"],
+        ["Date time original au '2021:03:02 10:05:52'", "video_2020_02_01-01-01-01",
+         DateTime.new(2021, 3, 2, 10, 5, 52), FileHelpers::VIDEO, ".mp4"]
       ]
     end
     with_them do
@@ -58,14 +60,16 @@ RSpec.describe MiniExiftoolManipulateur do
 
     where(:case_name, :nom_fichier, :date_time_original, :type, :extension) do
       [
-        ["Date time original au '2020:02:01 01:01:01'", "photo_2020_02_01-01-01-01", DateTime.new(2020, 2, 1, 1, 1, 1, "+1"), FileHelpers::IMAGE, ".jpeg"],
-        ["Date time original au '2020:02:01 01:01:01'", "video_2020_02_01-01-01-01", DateTime.new(2020, 2, 1, 1, 1, 1), FileHelpers::VIDEO, ".mp4"]
+        ["Date time original au '2020:02:01 01:01:01'", "photo_2020_02_01-01-01-01",
+         DateTime.new(2020, 2, 1, 1, 1, 1, "+1"), FileHelpers::IMAGE, ".jpeg"],
+        ["Date time original au '2020:02:01 01:01:01'", "video_2020_02_01-01-01-01", DateTime.new(2020, 2, 1, 1, 1, 1),
+         FileHelpers::VIDEO, ".mp4"]
       ]
     end
     with_them do
       it do
         fichier = ImageHelpers.creer_("#{FileHelpers::TMP}test01", nom_fichier, type, extension)
-        
+
         MiniExiftoolManipulateur.new.set_datetimeoriginal(fichier, date_time_original)
 
         expect(ExifHelpers.get_datetime(fichier)).to eql date_time_original
@@ -91,7 +95,7 @@ RSpec.describe MiniExiftoolManipulateur do
     with_them do
       it do
         File.new(chemin_fichier, "a") if chemin_fichier != ""
-        
+
         mini_exiftool_manipulateur = MiniExiftoolManipulateur.new
 
         expect { mini_exiftool_manipulateur.set_datetimeoriginal(chemin_fichier, DateTime.new(2020, 2, 1, 1, 1, 1)) }

@@ -48,7 +48,7 @@ RSpec.describe ExtracteurParDate do
         ["le nom 'PHOTO-2021-09-19-10-08-06'", "PHOTO-2021-09-19-10-08-06", DateTime.new(2021, 9, 19, 10, 8, 6)],
         ["le nom 'photo_2019_03_05-18_34_59'", "photo_2019_03_05-18_34_59", DateTime.new(2019, 3, 5, 18, 34, 59)],
         ["le nom 'photo_2019_03_05-18_54_59-01'", "photo_2019_03_05-18_54_59-01", DateTime.new(2019, 3, 5, 18, 54, 59)],
-        ["le nom 'VIDEO-2021-08-28-12-40-22'", "VIDEO-2021-08-28-12-40-22", DateTime.new(2021, 8, 28, 12, 40, 22)],
+        ["le nom 'VIDEO-2021-08-28-12-40-22'", "VIDEO-2021-08-28-12-40-22", DateTime.new(2021, 8, 28, 12, 40, 22)]
       ]
     end
     with_them do

@@ -10,7 +10,7 @@ module Catalogage
       @verificateur = verificateur
       @log = Logging.logger["Cataloguer"]
     end
-    
+
     def process(dossier, configuration)
       @analyse.analyser(dossier)
       @nom_attributeur.attribut(@analyse.fichiers_analyses)

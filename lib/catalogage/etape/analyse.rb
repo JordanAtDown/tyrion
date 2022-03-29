@@ -54,8 +54,7 @@ module Catalogage
           @fichiers_analyses.merge!({ path_destination =>
               @fichiers_analyses
               .fetch(path_destination)
-              .push(fichier_analyse)
-            })
+              .push(fichier_analyse) })
         else
           @fichiers_analyses.store(path_destination, [].push(fichier_analyse))
         end

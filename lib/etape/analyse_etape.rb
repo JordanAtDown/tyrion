@@ -51,13 +51,13 @@ class AnalyseEtape
 
   def extirpabilite_par(path_dossier, nom_fichier)
     extirpable = @extracteur.extirpabilite(nom_fichier)
-    if @noms_extirpable_par_dossier.key?(path_dossier)
-      nom_extirpable_par_dossier = @noms_extirpable_par_dossier.merge!({ path_dossier => @noms_extirpable_par_dossier
-        .fetch(path_dossier)
-        .push(extirpable) })
-    else
-      nom_extirpable_par_dossier = @noms_extirpable_par_dossier.merge!({ path_dossier => [].push(extirpable) })
-    end
+    nom_extirpable_par_dossier = if @noms_extirpable_par_dossier.key?(path_dossier)
+                                   @noms_extirpable_par_dossier.merge!({ path_dossier => @noms_extirpable_par_dossier
+                                     .fetch(path_dossier)
+                                     .push(extirpable) })
+                                 else
+                                   @noms_extirpable_par_dossier.merge!({ path_dossier => [].push(extirpable) })
+                                 end
     @log.debug "Le fichier '#{nom_fichier}' est extirpable : #{extirpable}"
     nom_extirpable_par_dossier
   end

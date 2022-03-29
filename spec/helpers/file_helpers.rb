@@ -2,7 +2,7 @@
 
 module FileHelpers
   TMP = "/tmp/"
-  RESSOURCES = File.expand_path("../../resources/", __FILE__)
+  RESSOURCES = File.expand_path("../resources", __dir__)
 
   IMAGE = "image.b64"
   VIDEO = "video.b64"

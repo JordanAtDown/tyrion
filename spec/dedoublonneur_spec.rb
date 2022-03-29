@@ -25,8 +25,8 @@ RSpec.describe Dedoublonneur do
     where(:case_name, :noms_attribues_par_extension, :extension, :attendu) do
       [
         ["le numéro '001'", {}, "jpg", "001"],
-        ["le numéro '003'", { "photo" => ["001", "002"] }, "jpg", "003"],
-        ["le numéro '002'", { "photo" => ["001", "002"], "video" => ["001"] }, "mp4", "002"],
+        ["le numéro '003'", { "photo" => %w[001 002] }, "jpg", "003"],
+        ["le numéro '002'", { "photo" => %w[001 002], "video" => ["001"] }, "mp4", "002"]
       ]
     end
     with_them do

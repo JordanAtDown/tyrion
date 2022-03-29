@@ -13,11 +13,7 @@ module Directory
   end
 
   def self.cree_le(dossier)
-    if dossier != ""
-      if !Dir.exist?(dossier)
-        FileUtils.mkdir_p(dossier)
-      end
-    end
+    FileUtils.mkdir_p(dossier) if dossier != "" && !Dir.exist?(dossier)
     dossier
   end
 end

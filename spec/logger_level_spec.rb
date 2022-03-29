@@ -20,6 +20,9 @@ RSpec.describe LoggerLevel do
   end
 
   it "doit lever une exception si le niveau de log défini est incorrect" do
-    expect { LoggerLevel.log_level("autre") }.to raise_error(LoggerLevel::LoggerLevelDefinitionErreur, "Le niveau de log est incorrect")
+    expect do
+      LoggerLevel.log_level("autre")
+    end.to raise_error(LoggerLevel::LoggerLevelDefinitionErreur,
+                       "Le niveau de log est incorrect")
   end
 end

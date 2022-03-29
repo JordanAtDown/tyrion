@@ -26,10 +26,10 @@ RSpec.describe TraitementDossierNonExtirpableEtape do
         attendu.each_pair do |key, value|
           expect(traitement_etape.fichiers).to be_key(key)
           expect(traitement_etape.fichiers.fetch(key)).to have_attributes(
-            :nom_attribue => value.nom_attribue,
-            :date => value.date,
-            :path => value.path,
-            :extension => value.extension
+            nom_attribue: value.nom_attribue,
+            date: value.date,
+            path: value.path,
+            extension: value.extension
           )
         end
       end

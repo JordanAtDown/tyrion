@@ -4,7 +4,6 @@ module Catalogage
   module Etape
     # Permet de vérifier les fichiers en conflit dans la destination
     class Verificateur
-      
       EXTENSIONS_EXCLUS = /\.(?!(ini|log|1|db-shm|db-wal|db)$)([^.]+$)/.freeze
 
       def initialize(index_fichiers_destination = [], index_fichiers_analyses = [], fichiers_conflit = {})
@@ -41,9 +40,7 @@ module Catalogage
         Dir.each_child(destination) do |nom_fichier|
           fichier = "#{destination}/#{nom_fichier}"
           if File.file?(fichier)
-            if File.extname(fichier) =~ EXTENSIONS_EXCLUS
-              @index_fichiers_destination.push fichier
-            end
+            @index_fichiers_destination.push fichier if File.extname(fichier) =~ EXTENSIONS_EXCLUS
           else
             index_destination(fichier)
             next

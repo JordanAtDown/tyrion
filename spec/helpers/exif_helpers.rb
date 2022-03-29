@@ -6,8 +6,6 @@ require "mini_exiftool"
 module ExifHelpers
   def self.get_datetime(fichier)
     date_time_original = MiniExiftool.new(fichier).date_time_original
-    unless MiniExiftool.new(fichier).date_time_original.nil?
-      DateTime.parse(date_time_original.to_s)
-    end
+    DateTime.parse(date_time_original.to_s) unless MiniExiftool.new(fichier).date_time_original.nil?
   end
 end

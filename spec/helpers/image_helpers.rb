@@ -3,7 +3,7 @@
 require "base64"
 
 module ImageHelpers
-  RESSOURCES = File.expand_path("../../resources/", __FILE__)
+  RESSOURCES = File.expand_path("../resources", __dir__)
 
   def self.creer_(path, nom, type, extension = "jpeg")
     base64_data = File.open("#{RESSOURCES}/#{type}").read

@@ -8,8 +8,8 @@ require "logger_level"
 # Configuration de demmarrage
 class StartupConfigurator
   PATTERN = Logging.layouts.pattern(
-    :pattern => "[%d] %-5l %c: %m\n",
-    :date_pattern => "%Y-%m-%d %H:%M:%S"
+    pattern: "[%d] %-5l %c: %m\n",
+    date_pattern: "%Y-%m-%d %H:%M:%S"
   )
 
   def self.builder(date_execution, commande, app)
@@ -31,7 +31,7 @@ class StartupConfigurator
     if Dir.exist?(Directory.cree_le(path_log))
       file_appender = Logging.appenders.file(
         "#{path_log}/#{@app.downcase}-#{@commande}_#{@date_execution.strftime("%Y_%m_%d-%H_%M_%S")}.log",
-        :layout => PATTERN
+        layout: PATTERN
       )
       Logging.logger.root.add_appenders(file_appender)
     end
@@ -39,7 +39,7 @@ class StartupConfigurator
   end
 
   def startup
-    stdout_appender = Logging.appenders.stdout("stdout", :layout => PATTERN)
+    stdout_appender = Logging.appenders.stdout("stdout", layout: PATTERN)
     Logging.logger.root.add_appenders(stdout_appender)
   end
 end

@@ -11,9 +11,7 @@ module ClassificateurParExtensions
   def self.get_type(extension)
     type = FileType::OTHER
     EXTENSIONS_PAR_PREFIXE.each_pair do |key, value|
-      if key =~ extension[/[a-zA-Z0-9]+/].downcase
-        type = value
-      end
+      type = value if key =~ extension[/[a-zA-Z0-9]+/].downcase
     end
     type
   end

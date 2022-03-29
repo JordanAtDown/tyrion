@@ -20,11 +20,10 @@ RSpec.describe Catalogage::Cataloger do
     where(:case_name, :fichiers, :attendu) do
       [
         ["le dossier camera",
-          { "camera" => ["PHOTO-2021-09-19-10-08-06.png"] },
-          [
-            ""
-          ]
-        ]
+         { "camera" => ["PHOTO-2021-09-19-10-08-06.png"] },
+         [
+           ""
+         ]]
       ]
     end
     with_them do
@@ -34,7 +33,7 @@ RSpec.describe Catalogage::Cataloger do
         exif_manipulateur_mock = mock
         extracteur_mock = mock
         configuration = Configuration.new(true, dossier_destination[0])
-  
+
         Catalogage::Cataloger.new(
           Catalogage::Etape::Analyse.new(extracteur_mock, exif_manipulateur_mock),
           Catalogage::Etape::NomAttribuer.new,

@@ -18,7 +18,8 @@ module Catalogage
 
       def path_destination
         if !@date_extraite.nil?
-          "#{@date_extraite.year}/#{format("%02d", @date_extraite.month)}/#{DossierParExtension.defini_dossier_par(@extension)}"
+          "#{@date_extraite.year}/#{format("%02d",
+                                           @date_extraite.month)}/#{DossierParExtension.defini_dossier_par(@extension)}"
         else
           "none/#{DossierParExtension.defini_dossier_par(@extension)}"
         end

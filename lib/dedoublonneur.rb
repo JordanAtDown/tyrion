@@ -27,7 +27,7 @@ class Dedoublonneur
   def attribution_par_numero(extension)
     type = ClassificateurParExtensions.get_type(extension)
     nom_numerote = ""
-    if @noms_attribues_par_extension.has_key?(type)
+    if @noms_attribues_par_extension.key?(type)
       numeros_attribues = @noms_attribues_par_extension.fetch(type)
       numero = numeros_attribues.length + 1
       nom_numerote = format("%03d", numero)

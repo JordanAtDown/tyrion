@@ -11,20 +11,18 @@ RSpec.describe AnalyseEtape do
     where(:case_name, :fichiers, :attendu, :stubs_return, :nombres_fichiers_analyses) do
       [
         ["le dossier '/annee/mois'",
-          { "/annee/mois" => ["01.ini", "owncloud.log", ".owncloudsync.log", ".owncloudsync.log.1", ".sync_journal.db", ".sync_journal.db-shm", ".sync_journal.db-wal"] },
-          {},
-          {},
-          0
-        ],
+         { "/annee/mois" => ["01.ini", "owncloud.log", ".owncloudsync.log", ".owncloudsync.log.1", ".sync_journal.db",
+                             ".sync_journal.db-shm", ".sync_journal.db-wal"] },
+         {},
+         {},
+         0],
         ["le dossier '/annee/mois'",
-          { "/annee/mois" => ["01.jpg", "IMG_20210803175810.jpg", "03.jpg"] },
-          { "/tmp/test01/annee/mois" => 33 },
-          { "/tmp/test01/annee/mois/01.jpg" => false,
-            "/tmp/test01/annee/mois/IMG_20210803175810.jpg" => true,
-            "/tmp/test01/annee/mois/03.jpg" => false
-          },
-          3
-        ]
+         { "/annee/mois" => ["01.jpg", "IMG_20210803175810.jpg", "03.jpg"] },
+         { "/tmp/test01/annee/mois" => 33 },
+         { "/tmp/test01/annee/mois/01.jpg" => false,
+           "/tmp/test01/annee/mois/IMG_20210803175810.jpg" => true,
+           "/tmp/test01/annee/mois/03.jpg" => false },
+         3]
       ]
     end
     with_them do
@@ -77,19 +75,17 @@ RSpec.describe AnalyseEtape do
     where(:case_name, :noms_extirpable_par_dossier, :dossier, :fichier, :attendu, :stubs_return) do
       [
         ["un fichier analyse au dossier '/tmp/vault/2022/02'",
-          { "/tmp/vault/2022/02" => [true] },
-          "/tmp/vault/2022/02",
-          "IMG_20190525_131228_BURST002",
-          { "/tmp/vault/2022/02" => [true, true] },
-          true
-        ],
+         { "/tmp/vault/2022/02" => [true] },
+         "/tmp/vault/2022/02",
+         "IMG_20190525_131228_BURST002",
+         { "/tmp/vault/2022/02" => [true, true] },
+         true],
         ["un nouveau dossier '/tmp/vault/2022/02'",
-          {},
-          "/tmp/vault/2022/02", 
-          "Mes Photos0001",
-          { "/tmp/vault/2022/02" => [false] },
-          false
-        ]
+         {},
+         "/tmp/vault/2022/02",
+         "Mes Photos0001",
+         { "/tmp/vault/2022/02" => [false] },
+         false]
       ]
     end
     with_them do

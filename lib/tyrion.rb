@@ -57,9 +57,9 @@ module Tyrion
 
         - Deplace les fichiers dans un sous-dossier par extension (ex: 2012/01/JPG, 2015/05/PNG)
     LONGDESC
-    option :log, :type => :string, :default => "", :aliases => :l
-    option :level, :type => :string, :default => "info", :aliases => :lvl
-    option :apply, :type => :boolean, :default => false, :aliases => :a
+    option :log, type: :string, default: "", aliases: :l
+    option :level, type: :string, default: "info", aliases: :lvl
+    option :apply, type: :boolean, default: false, aliases: :a
     def restore(path_dossier)
       StartupConfigurator.builder(DateTime.now, CommandeNom::RESTORE_CMD, "tyrion")
                          .set_log_level(options[:level])
@@ -89,7 +89,7 @@ module Tyrion
 
         [apply, a] : permet d'appliquer le catalogage, renommage et déplacé les fichiers
 
-      
+
       Fonctionnement :
 
 
@@ -102,22 +102,18 @@ module Tyrion
         Si il existe des conflit de nommage le rapport de log générera les conflits du dossier destinataire
         et n'appliquera aucune modification aux fichiers source
     LONGDESC
-    option :log, :type => :string, :default => "", :aliases => :l
-    option :level, :type => :string, :default => "info", :aliases => :lvl
-    option :apply, :type => :boolean, :default => false, :aliases => :a
+    option :log, type: :string, default: "", aliases: :l
+    option :level, type: :string, default: "info", aliases: :lvl
+    option :apply, type: :boolean, default: false, aliases: :a
     def catalog(path_dossier, destination)
       StartupConfigurator.builder(DateTime.now, CommandeNom::CATALOG_CMD, "tyrion")
                          .set_log_level(options[:level])
                          .set_log_file(options[:log])
                          .startup
 
-      if !Dir.exist?(destination)
-        FileUtils.mkdir_p(destination)
-      end
+      FileUtils.mkdir_p(destination) unless Dir.exist?(destination)
 
-      if !Dir.exist?(path_dossier)
-        raise
-      end
+      raise unless Dir.exist?(path_dossier)
 
       configuration = Configuration.new(options[:apply], destination)
 
