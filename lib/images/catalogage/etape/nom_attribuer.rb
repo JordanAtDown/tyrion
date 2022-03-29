@@ -1,7 +1,7 @@
 # frozen_string_literal: true
 
-require "nom_attributeur"
-require "dedoublonneur"
+require "images/nommage/nom_attributeur"
+require "images/nommage/dedoublonneur"
 
 module Catalogage
   module Etape

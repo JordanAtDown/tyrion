@@ -1,15 +1,18 @@
 # frozen_string_literal: true
 
-require "file_type"
+# Classification
+module Classification
+  PHOTO = "photo"
+  VIDEO = "video"
+  OTHER = "other"
 
-module ClassificateurParExtensions
   EXTENSIONS_PAR_PREFIXE = {
-    /jpg|jpeg|png|raw/ => FileType::PHOTO,
-    /mp4|mov/ => FileType::VIDEO
+    /jpg|jpeg|png|raw/ => PHOTO,
+    /mp4|mov/ => VIDEO
   }.freeze
 
   def self.get_type(extension)
-    type = FileType::OTHER
+    type = OTHER
     EXTENSIONS_PAR_PREFIXE.each_pair do |key, value|
       type = value if key =~ extension[/[a-zA-Z0-9]+/].downcase
     end

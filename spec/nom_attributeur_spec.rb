@@ -1,6 +1,6 @@
 # frozen_string_literal: true
 
-require "nom_attributeur"
+require "images/nommage/nom_attributeur"
 
 RSpec.describe NomAttributeur do
   it "Doit attribuer le prefixe photo quand l'extension est un format de photo" do

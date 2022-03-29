@@ -2,9 +2,11 @@
 
 require "logging"
 
+require "images/helpers/directory_helpers"
+
 require "images/restauration/etape/fichier"
-require "dedoublonneur"
-require "directory"
+
+require "images/nommage/dedoublonneur"
 
 # Définit l'étape de traitement de dossier non extirpable
 class TraitementDossierNonExtirpableEtape
@@ -27,7 +29,7 @@ class TraitementDossierNonExtirpableEtape
           fichiers.store(
             fichier,
             Fichier.new(
-              numero_attribue, Directory.get_date(File.dirname(fichier)),
+              numero_attribue, DirectoryHelpers.get_date(File.dirname(fichier)),
               File.dirname(fichier), File.extname(fichier)
             )
           )

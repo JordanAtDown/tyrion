@@ -16,7 +16,7 @@ RSpec.describe Catalogage::Etape::Application do
            "camera" => ["img.jpg"] },
          { "2021/10/JPG" => [Catalogage::Fichier.new("#{FileHelpers::TMP}rspec_analyse/camera/img.jpg", ".jpg", DateTime.new(2021, 10, 24, 10, 52, 13), false, "photo_2021_10_24-10_52_13")],
            "2022/01/MP4" => [Catalogage::Fichier.new("#{FileHelpers::TMP}rspec_analyse/camera/video/test.mp4",
-                                                            ".mp4", DateTime.new(2022, 1, 20, 10, 52, 13), true, "video_2022_01_20-10_52_13")] },
+                                                     ".mp4", DateTime.new(2022, 1, 20, 10, 52, 13), true, "video_2022_01_20-10_52_13")] },
          "#{FileHelpers::TMP}rspec_analyse/destination",
          [
            "#{FileHelpers::TMP}rspec_analyse/destination/2021/10/JPG/photo_2021_10_24-10_52_13.jpg",

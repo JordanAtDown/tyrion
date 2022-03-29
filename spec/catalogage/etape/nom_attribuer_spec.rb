@@ -8,8 +8,8 @@ RSpec.describe Catalogage::Etape::NomAttribuer do
     it "de tout les fichiers se trouvant dans un même dossier" do
       date_extraite = DateTime.new(2021, 1, 10, 12, 52, 13)
       fichiers_analyses = { "2021/01/JPG" => [Catalogage::Fichier.new("/tmp/camera/img.jpeg", ".jpeg",
-                                                                             date_extraite, false)] }
-                                                                             
+                                                                      date_extraite, false)] }
+
       Catalogage::Etape::NomAttribuer.new.attribut(fichiers_analyses)
 
       expect(fichiers_analyses.fetch("2021/01/JPG")[0].path).to eql "/tmp/camera/img.jpeg"

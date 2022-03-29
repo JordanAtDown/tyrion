@@ -2,11 +2,11 @@
 
 require "logging"
 
+require "images/helpers/regex_helpers"
+
 # Definit l'étape d'analyse
 class AnalyseEtape
   attr_reader :dossiers_analyses, :nombre_fichiers_analyses
-
-  EXTENSIONS_EXCLUS = /\.(?!(ini|log|1|db-shm|db-wal|db)$)([^.]+$)/.freeze
 
   def initialize(extracteur, noms_extirpable_par_dossier = {}, dossiers_analyses = {})
     @extracteur = extracteur
@@ -21,7 +21,7 @@ class AnalyseEtape
     Dir.each_child(dossier) do |nom_fichier|
       fichier = "#{dossier}/#{nom_fichier}"
       if File.file?(fichier)
-        if File.extname(fichier) =~ EXTENSIONS_EXCLUS
+        if File.extname(fichier) =~ RegexHelpers::EXTENSIONS_EXCLUS
           extirpabilite_par(dossier, fichier)
           @nombre_fichiers_analyses += 1
         else

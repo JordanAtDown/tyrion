@@ -1,6 +1,6 @@
 # frozen_string_literal: true
 
-require "dedoublonneur"
+require "images/nommage/dedoublonneur"
 
 RSpec.describe Dedoublonneur do
   describe "doit pouvoir dedoublonner" do

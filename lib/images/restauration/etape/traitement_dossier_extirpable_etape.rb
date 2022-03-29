@@ -3,8 +3,9 @@
 require "logging"
 
 require "images/restauration/etape/fichier"
-require "dedoublonneur"
-require "nom_attributeur"
+
+require "images/nommage/dedoublonneur"
+require "images/nommage/nom_attributeur"
 
 # Définit l'étape de traitement de dossier extirpable
 class TraitementDossierExtirpableEtape

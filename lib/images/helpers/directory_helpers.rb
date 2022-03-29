@@ -4,7 +4,7 @@ require "fileutils"
 require "date"
 
 # Directory
-module Directory
+module DirectoryHelpers
   def self.get_date(nom_dossier)
     chemins_dossier = nom_dossier.split("/")
     annee = chemins_dossier.select { |v| v =~ /^([0-9]{4})$/ }
@@ -15,5 +15,17 @@ module Directory
   def self.cree_le(dossier)
     FileUtils.mkdir_p(dossier) if dossier != "" && !Dir.exist?(dossier)
     dossier
+  end
+
+  def self.defini_dossier_par(extension)
+    if extension.downcase == ".jpeg"
+      "JPG"
+    else
+      extension[/[a-zA-Z0-9]+/].upcase
+    end
+  end
+
+  def self.nombre_fichiers(dossier)
+    Dir.glob(File.join(dossier, "**", "*")).select { |file| File.file?(file) }.count
   end
 end

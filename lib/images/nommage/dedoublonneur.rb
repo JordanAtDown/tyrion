@@ -1,6 +1,6 @@
 # frozen_string_literal: true
 
-require "classificateur_par_extension"
+require "images/classification/classification"
 
 # Dedoublonneur
 class Dedoublonneur
@@ -25,7 +25,7 @@ class Dedoublonneur
   end
 
   def attribution_par_numero(extension)
-    type = ClassificateurParExtensions.get_type(extension)
+    type = Classification.get_type(extension)
     nom_numerote = ""
     if @noms_attribues_par_extension.key?(type)
       numeros_attribues = @noms_attribues_par_extension.fetch(type)

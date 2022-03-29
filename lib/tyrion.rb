@@ -1,19 +1,18 @@
 # frozen_string_literal: true
 
 require "thor"
-require "date"
 
 require "tyrion/configuration"
-require "tyrion/commande_nom"
+require "tyrion/commandes"
 require "tyrion/startup_configurator"
 require "tyrion/version"
 require "tyrion"
 
-require "images/catalogage/catalog"
 require "images/catalogage/etape/analyse"
 require "images/catalogage/etape/application"
 require "images/catalogage/etape/nom_attribuer"
 require "images/catalogage/etape/verificateur"
+require "images/catalogage/catalog"
 
 require "images/restauration/etape/analyse_etape"
 require "images/restauration/etape/application_etape"
@@ -23,7 +22,7 @@ require "images/restauration/restore"
 
 require "images/exif/mini_exiftool_manipulateur"
 
-require "extracteur_par_date"
+require "images/extraction/extracteur_par_date"
 
 module Tyrion
   # Cli
@@ -64,9 +63,9 @@ module Tyrion
     option :apply, type: :boolean, default: false, aliases: :a
     def restore(path_dossier)
       Tyrion::StartupConfigurator.builder(DateTime.now, Tyrion::RESTORE_CMD, "tyrion")
-                         .set_log_level(options[:level])
-                         .set_log_file(options[:log])
-                         .startup
+                                 .set_log_level(options[:level])
+                                 .set_log_file(options[:log])
+                                 .startup
 
       Restauration::Restore.new(
         AnalyseEtape.new(ExtracteurParDate.new),
@@ -110,9 +109,9 @@ module Tyrion
     option :apply, type: :boolean, default: false, aliases: :a
     def catalog(path_dossier, destination)
       Tyrion::StartupConfigurator.builder(DateTime.now, Tyrion::CATALOG_CMD, "tyrion")
-                         .set_log_level(options[:level])
-                         .set_log_file(options[:log])
-                         .startup
+                                 .set_log_level(options[:level])
+                                 .set_log_file(options[:log])
+                                 .startup
 
       FileUtils.mkdir_p(destination) unless Dir.exist?(destination)
 

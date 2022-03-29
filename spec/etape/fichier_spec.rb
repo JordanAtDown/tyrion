@@ -1,7 +1,8 @@
 # frozen_string_literal: true
 
 require "images/restauration/etape/fichier"
-require "file_type"
+
+require "images/classification/classification"
 
 RSpec.describe Fichier do
   describe "doit pouvoir ajouter" do
@@ -16,7 +17,7 @@ RSpec.describe Fichier do
     with_them do
       it "afin de verifier tout tous les fichiers" do
         expect(fichier.path_nouveau_nom).to eq attendu
-        expect(fichier.type).to eq FileType::PHOTO
+        expect(fichier.type).to eq Classification::PHOTO
       end
     end
   end

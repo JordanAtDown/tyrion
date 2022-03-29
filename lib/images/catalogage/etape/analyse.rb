@@ -1,5 +1,7 @@
 # frozen_string_literal: true
 
+require "images/helpers/regex_helpers"
+
 require "images/catalogage/fichier"
 
 module Catalogage
@@ -7,8 +9,6 @@ module Catalogage
     # Analyse
     class Analyse
       attr_reader :fichiers_analyses
-
-      EXTENSIONS_EXCLUS = /\.(?!(ini|log|1|db-shm|db-wal|db)$)([^.]+$)/.freeze
 
       def initialize(extracteur, exif_manipulateur, fichiers_analyses = {})
         @extracteur = extracteur
@@ -22,7 +22,7 @@ module Catalogage
         Dir.each_child(dossier) do |nom_fichier|
           fichier = "#{dossier}/#{nom_fichier}"
           if File.file?(fichier)
-            if File.extname(fichier) =~ EXTENSIONS_EXCLUS
+            if File.extname(fichier) =~ RegexHelpers::EXTENSIONS_EXCLUS
               date_extraite = nil
               exif = false
               if @exif_manipulateur.datetimeoriginal?(fichier)

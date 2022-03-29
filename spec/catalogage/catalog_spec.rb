@@ -8,8 +8,9 @@ require "images/catalogage/etape/application"
 require "images/catalogage/etape/nom_attribuer"
 require "images/catalogage/etape/verificateur"
 
-require "extracteur_par_date"
 require "images/exif/mini_exiftool_manipulateur"
+
+require "images/extraction/extracteur_par_date"
 
 RSpec.describe Catalogage::Catalog do
   describe "doit cataloguer" do

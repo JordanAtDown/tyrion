@@ -1,6 +1,6 @@
 # frozen_string_literal: true
 
-require "extracteur_par_date"
+require "images/extraction/extracteur_par_date"
 
 RSpec.describe ExtracteurParDate do
   describe "doit pouvoir definir quand" do

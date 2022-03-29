@@ -1,11 +1,11 @@
 # frozen_string_literal: true
 
+require "images/helpers/regex_helpers"
+
 module Catalogage
   module Etape
     # Permet de vérifier les fichiers en conflit dans la destination
     class Verificateur
-      EXTENSIONS_EXCLUS = /\.(?!(ini|log|1|db-shm|db-wal|db)$)([^.]+$)/.freeze
-
       def initialize(index_fichiers_destination = [], index_fichiers_analyses = [], fichiers_conflit = {})
         @index_fichiers_destination = index_fichiers_destination
         @index_fichiers_analyses = index_fichiers_analyses
@@ -40,7 +40,7 @@ module Catalogage
         Dir.each_child(destination) do |nom_fichier|
           fichier = "#{destination}/#{nom_fichier}"
           if File.file?(fichier)
-            @index_fichiers_destination.push fichier if File.extname(fichier) =~ EXTENSIONS_EXCLUS
+            @index_fichiers_destination.push fichier if File.extname(fichier) =~ RegexHelpers::EXTENSIONS_EXCLUS
           else
             index_destination(fichier)
             next

@@ -1,7 +1,7 @@
 # frozen_string_literal: true
 
-require "dossier_par_extension"
-require "classificateur_par_extension"
+require "images/helpers/directory_helpers"
+require "images/classification/classification"
 
 # Fichier
 class Fichier
@@ -12,7 +12,7 @@ class Fichier
     @date = date
     @path = path
     @extension = extension
-    @type = ClassificateurParExtensions.get_type(extension)
+    @type = Classification.get_type(extension)
   end
 
   def path_nouveau_nom
@@ -20,6 +20,6 @@ class Fichier
   end
 
   def path_destination
-    "#{@path}/#{DossierParExtension.defini_dossier_par(@extension)}/#{@nom_attribue}#{@extension.downcase}"
+    "#{@path}/#{DirectoryHelpers.defini_dossier_par(@extension)}/#{@nom_attribue}#{@extension.downcase}"
   end
 end

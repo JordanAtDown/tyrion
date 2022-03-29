@@ -1,15 +1,16 @@
 # frozen_string_literal: true
 
+require "tyrion/configuration"
+
 require "images/restauration/etape/analyse_etape"
 require "images/restauration/etape/traitement_dossier_extirpable_etape"
 require "images/restauration/etape/traitement_dossier_non_extirpable_etape"
 require "images/restauration/etape/application_etape"
 require "images/restauration/restore"
 
-require "tyrion/configuration"
-
-require "extracteur_par_date"
 require "images/exif/mini_exiftool_manipulateur"
+
+require "images/extraction/extracteur_par_date"
 
 RSpec.describe Restauration::Restore do
   describe "doit restaurer" do
