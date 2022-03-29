@@ -2,7 +2,7 @@
 
 require "logging"
 
-require "etape/fichier"
+require "images/restauration/etape/fichier"
 require "dedoublonneur"
 require "directory"
 

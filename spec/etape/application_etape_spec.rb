@@ -1,7 +1,7 @@
 # frozen_string_literal: true
 
-require "etape/application_etape"
-require "etape/fichier"
+require "images/restauration/etape/application_etape"
+require "images/restauration/etape/fichier"
 
 RSpec.describe ApplicationEtape do
   describe "doit pouvoir parcourir" do

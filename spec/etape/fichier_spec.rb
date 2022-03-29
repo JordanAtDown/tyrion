@@ -1,6 +1,6 @@
 # frozen_string_literal: true
 
-require "etape/fichier"
+require "images/restauration/etape/fichier"
 require "file_type"
 
 RSpec.describe Fichier do

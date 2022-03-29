@@ -1,7 +1,7 @@
 # frozen_string_literal: true
 
-require "etape/traitement_dossier_non_extirpable_etape"
-require "etape/fichier"
+require "images/restauration/etape/traitement_dossier_non_extirpable_etape"
+require "images/restauration/etape/fichier"
 
 RSpec.describe TraitementDossierNonExtirpableEtape do
   describe "doit pouvoir parcourir" do

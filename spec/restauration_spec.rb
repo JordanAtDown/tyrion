@@ -1,10 +1,10 @@
 # frozen_string_literal: true
 
-require "etape/analyse_etape"
-require "etape/traitement_dossier_extirpable_etape"
-require "etape/traitement_dossier_non_extirpable_etape"
-require "etape/application_etape"
-require "restauration"
+require "images/restauration/etape/analyse_etape"
+require "images/restauration/etape/traitement_dossier_extirpable_etape"
+require "images/restauration/etape/traitement_dossier_non_extirpable_etape"
+require "images/restauration/etape/application_etape"
+require "images/restauration/restauration"
 require "configuration"
 
 require "startup_configurator"

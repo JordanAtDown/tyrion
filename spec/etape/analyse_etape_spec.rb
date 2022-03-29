@@ -1,6 +1,6 @@
 # frozen_string_literal: true
 
-require "etape/analyse_etape"
+require "images/restauration/etape/analyse_etape"
 
 RSpec.describe AnalyseEtape do
   describe "doit pouvoir parcourir" do

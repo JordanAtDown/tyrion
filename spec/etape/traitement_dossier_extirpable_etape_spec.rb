@@ -2,8 +2,8 @@
 
 require "rspec/expectations"
 
-require "etape/traitement_dossier_extirpable_etape"
-require "etape/fichier"
+require "images/restauration/etape/traitement_dossier_extirpable_etape"
+require "images/restauration/etape/fichier"
 
 RSpec.describe TraitementDossierExtirpableEtape do
   describe "doit pouvoir parcourir" do
