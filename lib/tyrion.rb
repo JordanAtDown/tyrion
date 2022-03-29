@@ -3,12 +3,11 @@
 require "thor"
 require "date"
 
-require_relative "tyrion/version"
+require "tyrion/configuration"
+require "tyrion/commande_nom"
+require "tyrion/startup_configurator"
+require "tyrion/version"
 require "tyrion"
-
-require "configuration"
-require "startup_configurator"
-require "commande_nom"
 
 require "images/catalogage/catalog"
 require "images/catalogage/etape/analyse"
@@ -64,11 +63,12 @@ module Tyrion
     option :level, type: :string, default: "info", aliases: :lvl
     option :apply, type: :boolean, default: false, aliases: :a
     def restore(path_dossier)
-      StartupConfigurator.builder(DateTime.now, CommandeNom::RESTORE_CMD, "tyrion")
+      Tyrion::StartupConfigurator.builder(DateTime.now, Tyrion::RESTORE_CMD, "tyrion")
                          .set_log_level(options[:level])
                          .set_log_file(options[:log])
                          .startup
-      Restauration.new(
+
+      Restauration::Restore.new(
         AnalyseEtape.new(ExtracteurParDate.new),
         TraitementDossierExtirpableEtape.new(ExtracteurParDate.new),
         TraitementDossierNonExtirpableEtape.new,
@@ -109,7 +109,7 @@ module Tyrion
     option :level, type: :string, default: "info", aliases: :lvl
     option :apply, type: :boolean, default: false, aliases: :a
     def catalog(path_dossier, destination)
-      StartupConfigurator.builder(DateTime.now, CommandeNom::CATALOG_CMD, "tyrion")
+      Tyrion::StartupConfigurator.builder(DateTime.now, Tyrion::CATALOG_CMD, "tyrion")
                          .set_log_level(options[:level])
                          .set_log_file(options[:log])
                          .startup
@@ -120,7 +120,7 @@ module Tyrion
 
       configuration = Configuration.new(options[:apply], destination)
 
-      Catalogage::Cataloger.new(
+      Catalogage::Catalog.new(
         Catalogage::Etape::Analyse.new(ExtracteurParDate.new, MiniExiftoolManipulateur.new),
         Catalogage::Etape::NomAttribuer.new,
         Catalogage::Etape::Application.new(MiniExiftoolManipulateur.new),

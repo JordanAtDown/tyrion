@@ -1,7 +1,6 @@
 # frozen_string_literal: true
 
-# Nom de commande
-module CommandeNom
+module Tyrion
   RESTORE_CMD = "restore"
   CATALOG_CMD = "catalog"
 end

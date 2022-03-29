@@ -5,9 +5,9 @@ require "images/restauration/etape/traitement_dossier_extirpable_etape"
 require "images/restauration/etape/traitement_dossier_non_extirpable_etape"
 require "images/restauration/etape/application_etape"
 require "images/restauration/restore"
-require "configuration"
 
-require "startup_configurator"
+require "tyrion/configuration"
+
 require "extracteur_par_date"
 require "images/exif/mini_exiftool_manipulateur"
 
@@ -68,7 +68,7 @@ RSpec.describe Restauration::Restore do
           TraitementDossierExtirpableEtape.new(extracteur_mock),
           TraitementDossierNonExtirpableEtape.new,
           ApplicationEtape.new(exif_manipulateur_mock),
-          Configuration.new(true, "")
+          Tyrion::Configuration.new(true, "")
         ).process(@dossier_tmp[0])
 
         expect(FileHelpers.nombre_fichiers(@dossier_tmp[0])).to eql attendu.length

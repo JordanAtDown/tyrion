@@ -1,6 +1,6 @@
 # frozen_string_literal: true
 
-require "configuration"
+require "tyrion/configuration"
 
 require "images/catalogage/catalog"
 require "images/catalogage/etape/analyse"
@@ -32,7 +32,7 @@ RSpec.describe Catalogage::Catalog do
         dossier_destination = FileUtils.mkdir_p("#{FileHelpers::TMP}rspec_catalog/destination")
         exif_manipulateur_mock = mock
         extracteur_mock = mock
-        configuration = Configuration.new(true, dossier_destination[0])
+        configuration = Tyrion::Configuration.new(true, dossier_destination[0])
 
         Catalogage::Catalog.new(
           Catalogage::Etape::Analyse.new(extracteur_mock, exif_manipulateur_mock),

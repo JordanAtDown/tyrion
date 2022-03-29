@@ -1,6 +1,6 @@
 # frozen_string_literal: true
 
-require "logger_level"
+require "tyrion/logger_level"
 
 RSpec.describe LoggerLevel do
   it "doit définir les différents niveau de log possible" do
