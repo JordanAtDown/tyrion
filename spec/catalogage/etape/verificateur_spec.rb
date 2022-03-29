@@ -1,7 +1,7 @@
 # frozen_string_literal: true
 
 require "images/catalogage/etape/verificateur"
-require "images/catalogage/etape/fichier"
+require "images/catalogage/fichier"
 
 RSpec.describe Catalogage::Etape::Verificateur do
   describe "doit pouvoir verifier" do
@@ -15,9 +15,9 @@ RSpec.describe Catalogage::Etape::Verificateur do
          { "2021/01/JPG" => ["photo_2021_01_10-15_10_52.jpeg"],
            "2021/01/MP4" => ["video_2022_02_10-11_50_40.mp4"] },
          {
-           "2021/01/JPG" => [Catalogage::Etape::Fichier.new("camera/img_0051.jpg", ".jpeg",
+           "2021/01/JPG" => [Catalogage::Fichier.new("camera/img_0051.jpg", ".jpeg",
                                                             DateTime.new(2021, 1, 10, 15, 10, 52), false, "photo_2021_01_10-15_10_52")],
-           "2022/02/MP4" => [Catalogage::Etape::Fichier.new("camera/video/vid_0050.mp4", ".mp4",
+           "2022/02/MP4" => [Catalogage::Fichier.new("camera/video/vid_0050.mp4", ".mp4",
                                                             DateTime.new(2022, 2, 22, 10, 52, 42), false, "video_2022_02_22-10_52_42")]
          },
          {

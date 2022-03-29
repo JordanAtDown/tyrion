@@ -1,7 +1,7 @@
 # frozen_string_literal: true
 
 require "images/catalogage/etape/analyse"
-require "images/catalogage/etape/fichier"
+require "images/catalogage/fichier"
 
 RSpec.describe Catalogage::Etape::Analyse do
   describe "doit pouvoir analyser" do

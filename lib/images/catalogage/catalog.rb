@@ -2,7 +2,7 @@
 
 module Catalogage
   # Cataloger
-  class Cataloger
+  class Catalog
     def initialize(analyse, nom_attributeur, application, verificateur)
       @analyse = analyse
       @nom_attributeur = nom_attributeur

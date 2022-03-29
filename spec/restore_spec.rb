@@ -4,14 +4,14 @@ require "images/restauration/etape/analyse_etape"
 require "images/restauration/etape/traitement_dossier_extirpable_etape"
 require "images/restauration/etape/traitement_dossier_non_extirpable_etape"
 require "images/restauration/etape/application_etape"
-require "images/restauration/restauration"
+require "images/restauration/restore"
 require "configuration"
 
 require "startup_configurator"
 require "extracteur_par_date"
 require "images/exif/mini_exiftool_manipulateur"
 
-RSpec.describe Restauration do
+RSpec.describe Restauration::Restore do
   describe "doit restaurer" do
     before do
       @dossier_tmp = FileUtils.makedirs "#{FileHelpers::TMP}test01"
@@ -63,7 +63,7 @@ RSpec.describe Restauration do
         extracteur_mock.stubs(:extraction_du).with("05-02-2012 21-26-00").then.returns(DateTime.new(2012, 2, 5, 21, 26,
                                                                                                     0))
 
-        Restauration.new(
+        Restauration::Restore.new(
           AnalyseEtape.new(extracteur_mock),
           TraitementDossierExtirpableEtape.new(extracteur_mock),
           TraitementDossierNonExtirpableEtape.new,

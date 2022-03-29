@@ -1,13 +1,13 @@
 # frozen_string_literal: true
 
 require "images/catalogage/etape/nom_attribuer"
-require "images/catalogage/etape/fichier"
+require "images/catalogage/fichier"
 
 RSpec.describe Catalogage::Etape::NomAttribuer do
   describe "doit pouvoir attribuer un nom" do
     it "de tout les fichiers se trouvant dans un même dossier" do
       date_extraite = DateTime.new(2021, 1, 10, 12, 52, 13)
-      fichiers_analyses = { "2021/01/JPG" => [Catalogage::Etape::Fichier.new("/tmp/camera/img.jpeg", ".jpeg",
+      fichiers_analyses = { "2021/01/JPG" => [Catalogage::Fichier.new("/tmp/camera/img.jpeg", ".jpeg",
                                                                              date_extraite, false)] }
                                                                              
       Catalogage::Etape::NomAttribuer.new.attribut(fichiers_analyses)

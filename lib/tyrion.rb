@@ -10,7 +10,7 @@ require "configuration"
 require "startup_configurator"
 require "commande_nom"
 
-require "images/catalogage/cataloger"
+require "images/catalogage/catalog"
 require "images/catalogage/etape/analyse"
 require "images/catalogage/etape/application"
 require "images/catalogage/etape/nom_attribuer"
@@ -20,7 +20,7 @@ require "images/restauration/etape/analyse_etape"
 require "images/restauration/etape/application_etape"
 require "images/restauration/etape/traitement_dossier_extirpable_etape"
 require "images/restauration/etape/traitement_dossier_non_extirpable_etape"
-require "images/restauration/restauration"
+require "images/restauration/restore"
 
 require "images/exif/mini_exiftool_manipulateur"
 
