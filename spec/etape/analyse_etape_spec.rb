@@ -1,8 +1,8 @@
 # frozen_string_literal: true
 
-require "images/restauration/etape/analyse_etape"
+require "images/restauration/etape/analyse"
 
-RSpec.describe AnalyseEtape do
+RSpec.describe Restauration::Etape::Analyse do
   describe "doit pouvoir parcourir" do
     before do
       @dossier_tmp = FileUtils.makedirs "#{FileHelpers::TMP}test01"
@@ -34,7 +34,7 @@ RSpec.describe AnalyseEtape do
           extracteur_mock.stubs(:extirpabilite).with(key).then.returns(value)
         end
 
-        analyse_etape = AnalyseEtape.new(extracteur_mock)
+        analyse_etape = Restauration::Etape::Analyse.new(extracteur_mock)
         analyse_etape.parcours(dossier_a_parcourir)
 
         expect(analyse_etape.dossiers_analyses).to eq attendu
@@ -65,7 +65,7 @@ RSpec.describe AnalyseEtape do
         extracteur_mock = mock
         extracteur_mock.expects(:extirpabilite).never
 
-        expect(AnalyseEtape.new(extracteur_mock,
+        expect(Restauration::Etape::Analyse.new(extracteur_mock,
                                 noms_extirpable_par_dossier).calcul_taux_d_extirpabilite_par(dossier)).to eq attendu
       end
     end
@@ -93,7 +93,7 @@ RSpec.describe AnalyseEtape do
         extracteur_mock = mock
         extracteur_mock.stubs(:extirpabilite).with(fichier).returns(stubs_return)
 
-        extirpable = AnalyseEtape.new(extracteur_mock, noms_extirpable_par_dossier).extirpabilite_par(dossier, fichier)
+        extirpable = Restauration::Etape::Analyse.new(extracteur_mock, noms_extirpable_par_dossier).extirpabilite_par(dossier, fichier)
 
         expect(extirpable).to eq attendu
       end

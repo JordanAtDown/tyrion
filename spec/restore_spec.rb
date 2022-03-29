@@ -2,10 +2,10 @@
 
 require "tyrion/configuration"
 
-require "images/restauration/etape/analyse_etape"
-require "images/restauration/etape/traitement_dossier_extirpable_etape"
-require "images/restauration/etape/traitement_dossier_non_extirpable_etape"
-require "images/restauration/etape/application_etape"
+require "images/restauration/etape/analyse"
+require "images/restauration/etape/traitement_dossier_extirpable"
+require "images/restauration/etape/traitement_dossier_non_extirpable"
+require "images/restauration/etape/application"
 require "images/restauration/restore"
 
 require "images/exif/mini_exiftool_manipulateur"
@@ -65,10 +65,10 @@ RSpec.describe Restauration::Restore do
                                                                                                     0))
 
         Restauration::Restore.new(
-          AnalyseEtape.new(extracteur_mock),
-          TraitementDossierExtirpableEtape.new(extracteur_mock),
-          TraitementDossierNonExtirpableEtape.new,
-          ApplicationEtape.new(exif_manipulateur_mock),
+          Restauration::Etape::Analyse.new(extracteur_mock),
+          Restauration::Etape::TraitementDossierExtirpable.new(extracteur_mock),
+          Restauration::Etape::TraitementDossierNonExtirpable.new,
+          Restauration::Etape::Application.new(exif_manipulateur_mock),
           Tyrion::Configuration.new(true, "")
         ).process(@dossier_tmp[0])
 

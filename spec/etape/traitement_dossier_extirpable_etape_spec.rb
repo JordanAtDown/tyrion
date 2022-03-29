@@ -2,10 +2,10 @@
 
 require "rspec/expectations"
 
-require "images/restauration/etape/traitement_dossier_extirpable_etape"
-require "images/restauration/etape/fichier"
+require "images/restauration/etape/traitement_dossier_extirpable"
+require "images/restauration/fichier"
 
-RSpec.describe TraitementDossierExtirpableEtape do
+RSpec.describe Restauration::Etape::TraitementDossierExtirpable do
   describe "doit pouvoir parcourir" do
     before do
       @dossier_tmp = FileUtils.makedirs "#{FileHelpers::TMP}test01"
@@ -17,7 +17,7 @@ RSpec.describe TraitementDossierExtirpableEtape do
          ["#{FileHelpers::TMP}test01/2012/08"],
          { "/2012/08" => ["IMG_20210803175810.jpg"] },
          { "/tmp/test01/2012/08/IMG_20210803175810.jpg" =>
-                  Fichier.new("photo_2021_08_03-17_58_10", DateTime.new(2021, 8, 3, 17, 58, 10), "/tmp/test01/2012/08",
+          Restauration::Fichier.new("photo_2021_08_03-17_58_10", DateTime.new(2021, 8, 3, 17, 58, 10), "/tmp/test01/2012/08",
                               ".jpg") }]
       ]
     end
@@ -28,7 +28,7 @@ RSpec.describe TraitementDossierExtirpableEtape do
         extracteur_mock.stubs(:extraction_du).with("IMG_20210803175810").then.returns(DateTime.new(2021, 8, 3, 17, 58,
                                                                                                    10))
 
-        traitement_etape = TraitementDossierExtirpableEtape.new(extracteur_mock)
+        traitement_etape = Restauration::Etape::TraitementDossierExtirpable.new(extracteur_mock)
         traitement_etape.parcours(dossiers)
 
         attendu.each_pair do |key, value|

@@ -1,17 +1,17 @@
 # frozen_string_literal: true
 
-require "images/restauration/etape/fichier"
-
 require "images/classification/classification"
 
-RSpec.describe Fichier do
+require "images/restauration/fichier"
+
+RSpec.describe Restauration::Fichier do
   describe "doit pouvoir ajouter" do
     where(:case_name, :fichier, :attendu) do
       [
         ["nom",
-         Fichier.new("photo_2021_01_01-10_05_55", DateTime.new(2021, 1, 1, 10, 5, 55), "/tmp/vault/2021/01", ".jpg"), "/tmp/vault/2021/01/photo_2021_01_01-10_05_55.jpg"],
+          Restauration::Fichier.new("photo_2021_01_01-10_05_55", DateTime.new(2021, 1, 1, 10, 5, 55), "/tmp/vault/2021/01", ".jpg"), "/tmp/vault/2021/01/photo_2021_01_01-10_05_55.jpg"],
         ["nom2",
-         Fichier.new("photo_2021_01_01-10_05_55", DateTime.new(2021, 1, 1, 10, 5, 55), "/tmp/vault/2021/01", ".JPEG"), "/tmp/vault/2021/01/photo_2021_01_01-10_05_55.jpeg"]
+          Restauration::Fichier.new("photo_2021_01_01-10_05_55", DateTime.new(2021, 1, 1, 10, 5, 55), "/tmp/vault/2021/01", ".JPEG"), "/tmp/vault/2021/01/photo_2021_01_01-10_05_55.jpeg"]
       ]
     end
     with_them do
@@ -26,9 +26,9 @@ RSpec.describe Fichier do
     where(:case_name, :fichier, :attendu) do
       [
         ["nom",
-         Fichier.new("photo_2021_01_01-10_05_55", DateTime.new(2021, 1, 1, 10, 5, 55), "/tmp/vault/2021/01", ".jpg"), "/tmp/vault/2021/01/JPG/photo_2021_01_01-10_05_55.jpg"],
+          Restauration::Fichier.new("photo_2021_01_01-10_05_55", DateTime.new(2021, 1, 1, 10, 5, 55), "/tmp/vault/2021/01", ".jpg"), "/tmp/vault/2021/01/JPG/photo_2021_01_01-10_05_55.jpg"],
         ["nom2",
-         Fichier.new("photo_2021_01_01-10_05_55", DateTime.new(2021, 1, 1, 10, 5, 55), "/tmp/vault/2021/01", ".JPEG"), "/tmp/vault/2021/01/JPG/photo_2021_01_01-10_05_55.jpeg"]
+          Restauration::Fichier.new("photo_2021_01_01-10_05_55", DateTime.new(2021, 1, 1, 10, 5, 55), "/tmp/vault/2021/01", ".JPEG"), "/tmp/vault/2021/01/JPG/photo_2021_01_01-10_05_55.jpeg"]
       ]
     end
     with_them do
