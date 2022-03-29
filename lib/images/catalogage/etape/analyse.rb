@@ -1,6 +1,6 @@
 # frozen_string_literal: true
 
-require "catalogage/etape/fichier"
+require "images/catalogage/etape/fichier"
 
 module Catalogage
   module Etape

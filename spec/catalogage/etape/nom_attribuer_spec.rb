@@ -1,7 +1,7 @@
 # frozen_string_literal: true
 
-require "catalogage/etape/nom_attribuer"
-require "catalogage/etape/fichier"
+require "images/catalogage/etape/nom_attribuer"
+require "images/catalogage/etape/fichier"
 
 RSpec.describe Catalogage::Etape::NomAttribuer do
   describe "doit pouvoir attribuer un nom" do

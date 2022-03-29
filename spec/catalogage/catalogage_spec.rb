@@ -2,11 +2,11 @@
 
 require "configuration"
 
-require "catalogage/cataloger"
-require "catalogage/etape/analyse"
-require "catalogage/etape/application"
-require "catalogage/etape/nom_attribuer"
-require "catalogage/etape/verificateur"
+require "images/catalogage/cataloger"
+require "images/catalogage/etape/analyse"
+require "images/catalogage/etape/application"
+require "images/catalogage/etape/nom_attribuer"
+require "images/catalogage/etape/verificateur"
 
 require "extracteur_par_date"
 require "exif/mini_exiftool_manipulateur"
