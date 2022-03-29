@@ -20,7 +20,7 @@ require "etape/analyse_etape"
 require "etape/application_etape"
 require "etape/traitement_dossier_extirpable_etape"
 require "etape/traitement_dossier_non_extirpable_etape"
-require "exif/mini_exiftool_manipulateur"
+require "images/exif/mini_exiftool_manipulateur"
 require "restauration"
 require "extracteur_par_date"
 

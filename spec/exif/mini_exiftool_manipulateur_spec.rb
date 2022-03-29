@@ -1,7 +1,7 @@
 # frozen_string_literal: true
 
-require "exif/mini_exiftool_manipulateur"
-require "etape/exif_manipulateur"
+require "images/exif/mini_exiftool_manipulateur"
+require "images/exif/exif_manipulateur"
 
 require "mini_exiftool"
 

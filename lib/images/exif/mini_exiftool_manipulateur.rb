@@ -2,7 +2,7 @@
 
 require "mini_exiftool"
 
-require "etape/exif_manipulateur"
+require "images/exif/exif_manipulateur"
 
 # Exif Manipulateur
 class MiniExiftoolManipulateur
