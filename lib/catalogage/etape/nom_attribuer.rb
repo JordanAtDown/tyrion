@@ -11,11 +11,14 @@ module Catalogage
         fichiers_analyses_par_dossier.each_value do |dossier|
           dedoublonneur = Dedoublonneur.new
           dossier.each do |fichier_analyse|
-            unless fichier_analyse.date_extraite.nil?
-              nom_attribue = dedoublonneur.dedoublonne_par_numerotation(
+            # Dans le cas des fichiers qui vont vers none il faut casser les doublons
+            if fichier_analyse.date_extraite.nil?
+              fichier_analyse.nom_attribue = dedoublonneur.dedoublonne_par_numerotation(File.basename(fichier_analyse.path, fichier_analyse.extension))
+            else
+              fichier_analyse.nom_attribue = dedoublonneur.dedoublonne_par_numerotation(
                 NomAttributeur.attribut_par(fichier_analyse.extension,
                                             fichier_analyse.date_extraite))
-              fichier_analyse.nom_attribue = nom_attribue
+
             end
           end
         end

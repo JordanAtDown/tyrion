@@ -11,6 +11,7 @@ module Catalogage
         @index_fichiers_destination = index_fichiers_destination
         @index_fichiers_analyses = index_fichiers_analyses
         @fichiers_conflit = fichiers_conflit
+        @log = Logging.logger["Verificateur"]
       end
 
       def index(fichiers_analyses, path_destination)

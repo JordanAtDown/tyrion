@@ -2,10 +2,9 @@
 
 # Configuration
 class Configuration
-  attr_reader :apply
-  attr_accessor :destination
+  attr_reader :apply, :destination
 
-  def initialize(apply, destination = nil)
+  def initialize(apply, destination)
     @apply = apply
     @destination = destination
   end

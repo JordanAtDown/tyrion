@@ -5,7 +5,7 @@ module Catalogage
     class Application
       def initialize(exif_manipulateur)
         @exif_manipulateur = exif_manipulateur
-        @log = Logging.logger[self]
+        @log = Logging.logger["Application"]
       end
 
       def applique(fichiers_par_dossier, destination)
@@ -14,17 +14,14 @@ module Catalogage
           destination_par_dossier = "#{destination}/#{dossier}"
           @log.info "destination '#{destination_par_dossier}'"
           fichiers.each do |fichier|
-            @log.debug "Application sur le fichier '#{fichier}'"
+            @log.debug "Application sur le fichier '#{fichier.path}'"
             if fichier.exif
-              @exif_manipulateur.set_datetimeoriginal(fichier, fichier.date_extraite)
+              @exif_manipulateur.set_datetimeoriginal(fichier.path, fichier.date_extraite)
             end
-            File.rename(fichier.path, fichier.path_nouveau_nom(File.dirname(fichier.path)))
+            nouveau_nom = fichier.path_nouveau_nom(File.dirname(fichier.path))
+            File.rename(fichier.path, nouveau_nom)
             FileUtils.mkdir_p(destination_par_dossier)
-            FileUtils.move(fichier.path_nouveau_nom(File.dirname(fichier.path)), fichier.path_nouveau_nom(destination_par_dossier))
-          rescue ExifManipulateur::ExifManipulateurErreur => e
-            @log.fatal e.message
-          rescue SystemCallError => e
-            @log.fatal e.message
+            FileUtils.move(nouveau_nom, fichier.path_nouveau_nom(destination_par_dossier))
           end
         end
       end

@@ -14,7 +14,7 @@ module Catalogage
         @extracteur = extracteur
         @exif_manipulateur = exif_manipulateur
         @fichiers_analyses = fichiers_analyses
-        @log = Logging.logger[self]
+        @log = Logging.logger["Analyse"]
       end
 
       def analyser(dossier)
@@ -30,6 +30,8 @@ module Catalogage
                 exif = true
               elsif @extracteur.extirpabilite(fichier)
                 date_extraite = @extracteur.extraction_du(File.basename(fichier, File.extname(fichier)))
+              else
+                @log.warn "Aucune date extraire pour le fichier '#{fichier}'"
               end
               @log.debug "Le fichier '#{fichier}' à une date extraite au #{date_extraite}"
               @log.debug "La date extraite viens des metadata 'datetimeoriginal' : #{exif ? "oui" : "non"}"

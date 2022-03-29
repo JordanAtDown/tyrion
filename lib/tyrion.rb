@@ -70,11 +70,11 @@ module Tyrion
         TraitementDossierExtirpableEtape.new(ExtracteurParDate.new),
         TraitementDossierNonExtirpableEtape.new,
         ApplicationEtape.new(MiniExiftoolManipulateur.new),
-        Configuration.new(options[:apply])
+        Configuration.new(options[:apply], "")
       ).process(path_dossier)
     end
 
-    desc "catalogue [path_dossier] [destination]", "Permet de trier et ranger les fichiers d'un dossier vers un autre"
+    desc "catalog [path_dossier] [destination]", "Permet de trier et ranger les fichiers d'un dossier vers un autre"
     long_desc <<-LONGDESC
 
       Exemple d'utilisation
@@ -83,11 +83,24 @@ module Tyrion
 
       les paramétres :
 
-        [log, l] : permet de définir l'emplacement où sera verser le fichier 'tyrion_restore_yyy_mm_dd-hh_mm_ss.log' (ex : "/tmp/tyrion"), si il n'existe pas il sera crée
+        [log, l] : permet de définir l'emplacement où sera verser le fichier 'tyrion_catalog_yyy_mm_dd-hh_mm_ss.log' (ex : "/tmp/tyrion"), si il n'existe pas il sera crée
 
         [level, lvl] : permet de définir le niveau de log (debug, info, warn, error, fatal) à afficher par défaut il est défini à 'info'
 
         [apply, a] : permet d'appliquer le catalogage, renommage et déplacé les fichiers
+
+      
+      Fonctionnement :
+
+
+        Parcours un dossier pour définir si un fichier posséde des metadata exif ou que l'extraction de son nom permet d'extraire une date
+
+        Puis renomme est déplace les fichiers par arborescence 'annee/mois/extension' dans un dossier de destination
+
+        Vérifie que le dossier de destination ne contient aucun conflit de nommage.CLI
+
+        Si il existe des conflit de nommage le rapport de log générera les conflits du dossier destinataire
+        et n'appliquera aucune modification aux fichiers source
     LONGDESC
     option :log, :type => :string, :default => "", :aliases => :l
     option :level, :type => :string, :default => "info", :aliases => :lvl
@@ -98,16 +111,15 @@ module Tyrion
                          .set_log_file(options[:log])
                          .startup
 
-      configuration = Configuration.new(options[:apply])
-
-      if !Dir.exist?(path_dossier)
-        FileUtils.mkdir_p(dossier)
-      end
-
       if !Dir.exist?(destination)
         FileUtils.mkdir_p(destination)
-        configuration.destination = destination
       end
+
+      if !Dir.exist?(path_dossier)
+        raise
+      end
+
+      configuration = Configuration.new(options[:apply], destination)
 
       Catalogage::Cataloger.new(
         Catalogage::Etape::Analyse.new(ExtracteurParDate.new, MiniExiftoolManipulateur.new),

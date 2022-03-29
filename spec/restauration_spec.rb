@@ -59,7 +59,7 @@ RSpec.describe Restauration do
           TraitementDossierExtirpableEtape.new(extracteur_mock),
           TraitementDossierNonExtirpableEtape.new,
           ApplicationEtape.new(exif_manipulateur_mock),
-          Configuration.new(true)
+          Configuration.new(true, "")
         ).process(@dossier_tmp[0])
 
         expect(FileHelpers.nombre_fichiers(@dossier_tmp[0])).to eql attendu.length
