@@ -15,7 +15,7 @@ module Catalogage
           @log.info "destination '#{destination_par_dossier}'"
           fichiers.each do |fichier|
             @log.debug "Application sur le fichier '#{fichier.path}'"
-            if fichier.exif
+            if !fichier.exif
               @exif_manipulateur.set_datetimeoriginal(fichier.path, fichier.date_extraite)
             end
             nouveau_nom = fichier.path_nouveau_nom(File.dirname(fichier.path))

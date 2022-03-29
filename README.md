@@ -1,32 +1,32 @@
 # Tyrion
 
-Welcome to your new gem! In this directory, you'll find the files you need to be able to package up your Ruby library into a gem. Put your Ruby code in the file `lib/tyrion`. To experiment with that code, run `bin/console` for an interactive prompt.
+Tyrion est un interpréteur de command permettant d'exécuter différentes tâches. Les différentes tâches qui sont implémentés sont :
 
-TODO: Delete this and the text above, and describe your gem
+* La réparation d'un dossier contenant photos et vidéo pour appliquer une structure, nommage et metadata correcte
+* Le catalogague de photo et vidéo
 
 ## Installation
 
-Add this line to your application's Gemfile:
-
-```ruby
-gem 'tyrion'
-```
-
-And then execute:
+Exécuter :
 
     $ bundle install
 
-Or install it yourself as:
-
-    $ gem install tyrion
-
 ## Usage
 
-TODO: Write usage instructions here
+Tyrion est un CLI. Les commandes implémentés actuellement sont : 
 
-## Development
+    > $ tyrion restore "/mnt/d/backup/Vault"
 
-After checking out the repo, run `bin/setup` to install dependencies. Then, run `rake spec` to run the tests. You can also run `bin/console` for an interactive prompt that will allow you to experiment.
+    > $ tyrion catalog "/mnt/d/backup/camera" "/mnt/d/backup/Vault"
 
-To install this gem onto your local machine, run `bundle exec rake install`. To release a new version, update the version number in `version.rb`, and then run `bundle exec rake release`, which will create a git tag for the version, push git commits and the created tag, and push the `.gem` file to [rubygems.org](https://rubygems.org).
+La documentation de chacune des commandes est disponible
+
+    > $ tyrion help [command] 
+
+## Développement
+
+Aprés avoir récupéré le repository, exécuter `bin/setup` pour installer les dépendances. Puis lancer `rake spec` pour exécuter les tests automatisés.
+
+Pour installer cette gem sur la machine, exécuter `bundle exec rake install`. 
+Pour release une nouvelle version, mettre à jour le numéro de version dans `version.rb`, puis exécuter `bundle exec rake release` ce qui crée un nouveau tag git pour la version, push les commit et crée un tag et push le `.gem` vers [rubygems.org](https://rubygems.org).
 
