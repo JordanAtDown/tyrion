@@ -5,6 +5,11 @@ require "logging"
 require "tyrion/logger_level"
 
 module Tyrion
+  def self.cree_le(dossier)
+    FileUtils.mkdir_p(dossier) if dossier != "" && !Dir.exist?(dossier)
+    dossier
+  end
+  
   # Configuration de demmarrage
   class StartupConfigurator
     PATTERN = Logging.layouts.pattern(
@@ -22,18 +27,13 @@ module Tyrion
       @app = app
     end
 
-    def self.cree_le(dossier)
-      FileUtils.mkdir_p(dossier) if dossier != "" && !Dir.exist?(dossier)
-      dossier
-    end
-
     def set_log_level(level)
       Logging.logger.root.level = LoggerLevel.log_level(level)
       self
     end
 
     def set_log_file(path_log)
-      if Dir.exist?(cree_le(path_log))
+      if Dir.exist?(Tyrion::cree_le(path_log))
         file_appender = Logging.appenders.file(
           "#{path_log}/#{@app.downcase}-#{@commande}_#{@date_execution.strftime("%Y_%m_%d-%H_%M_%S")}.log",
           layout: PATTERN

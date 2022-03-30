@@ -120,7 +120,7 @@ module Tyrion
         Catalogage::Etape::NomAttribuer.new,
         Catalogage::Etape::Application.new(MiniExiftoolManipulateur.new),
         Catalogage::Etape::Verificateur.new
-      ).process(path_dossier, apply, destination)
+      ).process(path_dossier, options[:apply], destination)
     end
   end
 end
