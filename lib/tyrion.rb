@@ -67,10 +67,10 @@ module Tyrion
                                  .startup
 
       Restauration::Restore.new(
-        AnalyseEtape.new(ExtracteurParDate.new),
-        TraitementDossierExtirpableEtape.new(ExtracteurParDate.new),
-        TraitementDossierNonExtirpableEtape.new,
-        ApplicationEtape.new(MiniExiftoolManipulateur.new)
+        Restauration::Etape::Analyse.new(ExtracteurParDate.new),
+        Restauration::Etape::TraitementDossierExtirpable.new(ExtracteurParDate.new),
+        Restauration::Etape::TraitementDossierNonExtirpable.new,
+        Restauration::Etape::Application.new(MiniExiftoolManipulateur.new)
       ).process(path_dossier, options[:apply])
     end
 
