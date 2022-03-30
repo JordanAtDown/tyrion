@@ -2,7 +2,6 @@
 
 require "thor"
 
-require "tyrion/configuration"
 require "tyrion/commandes"
 require "tyrion/startup_configurator"
 require "tyrion/version"
@@ -71,9 +70,8 @@ module Tyrion
         AnalyseEtape.new(ExtracteurParDate.new),
         TraitementDossierExtirpableEtape.new(ExtracteurParDate.new),
         TraitementDossierNonExtirpableEtape.new,
-        ApplicationEtape.new(MiniExiftoolManipulateur.new),
-        Configuration.new(options[:apply], "")
-      ).process(path_dossier)
+        ApplicationEtape.new(MiniExiftoolManipulateur.new)
+      ).process(path_dossier, options[:apply])
     end
 
     desc "catalog [path_dossier] [destination]", "Permet de trier et ranger les fichiers d'un dossier vers un autre"
@@ -117,14 +115,12 @@ module Tyrion
 
       raise unless Dir.exist?(path_dossier)
 
-      configuration = Configuration.new(options[:apply], destination)
-
       Catalogage::Catalog.new(
         Catalogage::Etape::Analyse.new(ExtracteurParDate.new, MiniExiftoolManipulateur.new),
         Catalogage::Etape::NomAttribuer.new,
         Catalogage::Etape::Application.new(MiniExiftoolManipulateur.new),
         Catalogage::Etape::Verificateur.new
-      ).process(path_dossier, configuration)
+      ).process(path_dossier, apply, destination)
     end
   end
 end
